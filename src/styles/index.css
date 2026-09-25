@@ -1,0 +1,277 @@
+@import "tailwindcss";
+@source not "../../legacy";
+@import "./tokens.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant fine (@media (hover: hover) and (pointer: fine));
+@custom-variant motion-ok (@media (prefers-reduced-motion: no-preference));
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-bg-sunken: var(--bg-sunken);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-subtle: var(--fg-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-inverse: var(--inverse-bg);
+  --color-inverse-fg: var(--inverse-fg);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --text-mega: var(--text-mega);
+  --text-display: var(--text-display);
+  --text-h1: var(--text-h1);
+  --text-h2: var(--text-h2);
+  --text-h3: var(--text-h3);
+  --text-lead: var(--text-lead);
+  --text-body: var(--text-body);
+  --text-small: var(--text-small);
+  --text-label: var(--text-label);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --ease-soft: var(--ease-soft);
+
+  --spacing-gutter: var(--gutter);
+  --spacing-section: var(--section-y);
+  --spacing-nav: var(--nav-h);
+}
+
+/* ------------------------------------------------------------------ base */
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: var(--nav-h);
+  }
+
+  body {
+    min-height: 100svh;
+    background: var(--bg);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--selection);
+    color: var(--selection-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ------------------------------------------------------------ typography */
+
+@layer components {
+  .t-mega,
+  .t-display {
+    font-weight: 700;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-variation-settings: "wght" 720;
+  }
+  .t-mega {
+    font-size: var(--text-mega);
+  }
+  .t-display {
+    font-size: var(--text-display);
+  }
+  .t-h1,
+  .t-h2 {
+    font-weight: 600;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+  }
+  .t-h1 {
+    font-size: var(--text-h1);
+  }
+  .t-h2 {
+    font-size: var(--text-h2);
+  }
+  .t-h3 {
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+  .t-lead {
+    font-size: var(--text-lead);
+    line-height: 1.4;
+    letter-spacing: -0.012em;
+  }
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 450;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+  /* Editorial serif accent inside display type, e.g. <em class="t-serif">…</em> */
+  .t-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: normal;
+    letter-spacing: -0.02em;
+  }
+
+  .container-x {
+    width: 100%;
+    max-width: var(--max-w);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--gutter);
+  }
+  @media (min-width: 48rem) {
+    .grid-12 {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .grid-12 {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+  }
+
+  .hairline {
+    height: 1px;
+    background: var(--line);
+    transform-origin: left center;
+  }
+}
+
+/* --------------------------------------------------------- motion guards */
+
+/*
+ * Elements that animate in are hidden before JS runs only when motion is
+ * allowed and JS is available (html.js is set by the inline head script),
+ * so content is never lost with JS disabled or reduced motion.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal],
+  .js [data-fade],
+  .js [data-stagger] > * {
+    visibility: hidden;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Theme change: short crossfade fallback when View Transitions are unavailable */
+html.theme-fading,
+html.theme-fading *,
+html.theme-fading *::before,
+html.theme-fading *::after {
+  transition:
+    background-color 400ms var(--ease-in-out),
+    border-color 400ms var(--ease-in-out),
+    color 400ms var(--ease-in-out),
+    fill 400ms var(--ease-in-out) !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Custom cursor hides the native one only on fine pointers, and never on text fields. */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor a,
+  html.has-cursor button,
+  html.has-cursor [role="button"],
+  html.has-cursor label {
+    cursor: none;
+  }
+  html.has-cursor input,
+  html.has-cursor textarea,
+  html.has-cursor select,
+  html.has-cursor [contenteditable] {
+    cursor: auto;
+  }
+}
+
+/* Film grain: one static fixed layer, no animation. */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * SplitText line masks clip at the line box; tight display leading would cut
+ * descenders (y, g) and accents. Pad the mask and pull it back so layout is unchanged.
+ */
+.rt-line-mask {
+  padding-block: 0.1em 0.16em;
+  margin-block: -0.1em -0.16em;
+}

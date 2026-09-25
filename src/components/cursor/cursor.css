@@ -1,0 +1,98 @@
+.cursor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transition: opacity 250ms var(--ease-soft);
+}
+.cursor[data-visible="false"],
+.cursor[data-state="hide"] {
+  opacity: 0;
+}
+
+.cursor__dot,
+.cursor__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.cursor__dot::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--fg);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.cursor__press {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  display: grid;
+  place-items: center;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.cursor[data-pressed="true"] .cursor__press {
+  transform: scale(0.86);
+}
+
+.cursor__shape {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  transform: scale(0.42);
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+.cursor__label {
+  position: relative;
+  color: var(--accent-fg);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+/* Link / button */
+.cursor[data-state="link"] .cursor__shape {
+  transform: scale(0.85);
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
+}
+.cursor[data-state="link"] .cursor__dot::before {
+  transform: scale(0);
+}
+
+/* Labelled bubble: VIEW / OPEN / DRAG / EXPLORE */
+.cursor[data-state="label"] .cursor__shape {
+  transform: scale(1.5);
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+.cursor[data-state="label"] .cursor__label {
+  opacity: 1;
+  transform: scale(1);
+}
+.cursor[data-state="label"] .cursor__dot::before {
+  transform: scale(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor__shape,
+  .cursor__label,
+  .cursor__press,
+  .cursor__dot::before {
+    transition-duration: 0.01ms;
+  }
+}

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Aishwarya Raj Tyagi — Full Stack Developer</title>
+    <meta name="description" content="Aishwarya Raj Tyagi — Full Stack Developer with 5+ years of experience building scalable, production-ready web applications in React, Next.js, and Node.js." />
+    <meta name="author" content="Aishwarya Raj Tyagi" />
+    <link rel="canonical" href="https://aishwaryarajtyagi.com/" />
+    <meta name="theme-color" content="#f1efea" />
+
+    <!-- Open Graph / Twitter (og:image upgraded to a 1200×630 card in Phase 9) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aishwarya Raj Tyagi" />
+    <meta property="og:title" content="Aishwarya Raj Tyagi — Full Stack Developer" />
+    <meta property="og:description" content="Full Stack Developer with 5+ years of experience building production-ready web applications in React, Next.js, and Node.js." />
+    <meta property="og:url" content="https://aishwaryarajtyagi.com/" />
+    <meta property="og:image" content="https://aishwaryarajtyagi.com/professional-portfolio.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Aishwarya Raj Tyagi — Full Stack Developer" />
+    <meta name="twitter:description" content="Full Stack Developer with 5+ years of experience building production-ready web applications in React, Next.js, and Node.js." />
+    <meta name="twitter:image" content="https://aishwaryarajtyagi.com/professional-portfolio.png" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/professional-portfolio.png" />
+    <link rel="apple-touch-icon" href="/professional-portfolio.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://aishwaryarajtyagi.com/#person",
+            "name": "Aishwarya Raj Tyagi",
+            "jobTitle": "Full Stack Developer",
+            "url": "https://aishwaryarajtyagi.com/",
+            "email": "mailto:aishraj05@gmail.com",
+            "sameAs": ["https://github.com/aishrt", "https://www.linkedin.com/in/aishwarya-raj-tyagi/"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://aishwaryarajtyagi.com/#website",
+            "url": "https://aishwaryarajtyagi.com/",
+            "name": "Aishwarya Raj Tyagi — Full Stack Developer",
+            "publisher": { "@id": "https://aishwaryarajtyagi.com/#person" }
+          }
+        ]
+      }
+    </script>
+
+    <!-- Theme before first paint (same "theme" key as the original site) + JS flag for motion guards. -->
+    <script>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add("js");
+        var theme = "light";
+        try {
+          theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        } catch (e) {}
+        root.classList.add(theme);
+        if (theme === "dark") document.querySelector('meta[name="theme-color"]').setAttribute("content", "#0e0e0d");
+      })();
+    </script>
+    <style>
+      html { background: #f1efea; }
+      html.dark { background: #0e0e0d; }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <p style="padding:2rem;font-family:system-ui">This portfolio needs JavaScript. You can reach Aishwarya Raj Tyagi at <a href="mailto:aishraj05@gmail.com">aishraj05@gmail.com</a>.</p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
