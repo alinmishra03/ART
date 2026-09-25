@@ -3,7 +3,9 @@ import { Nav } from "../components/layout/Nav";
 import { useIntro } from "../providers/Intro";
 import { useScrollTo } from "../providers/SmoothScroll";
 import { Hero } from "../sections/hero/Hero";
-import { InterimAbout, InterimContact, InterimSkills, InterimWork } from "../sections/Interim";
+import { About } from "../sections/about/About";
+import { InterimContact, InterimWork } from "../sections/Interim";
+import { Skills } from "../sections/skills/Skills";
 
 export function Home() {
   const { ready } = useIntro();
@@ -28,9 +30,9 @@ export function Home() {
       <Nav />
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
-        <InterimAbout />
+        <About />
         <InterimWork />
-        <InterimSkills />
+        <Skills />
         <InterimContact />
       </main>
     </>

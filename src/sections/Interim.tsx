@@ -1,34 +1,12 @@
 /*
- * Interim sections (Phase 3). They carry the real content so every nav target,
- * project link and contact method works while the designed sections are built
- * in Phases 4–6, which replace this file.
+ * Interim Work and Contact sections. They carry the real content so every nav
+ * target, project link and contact method works until Phases 5–6 replace them.
  */
-import { FadeIn, RevealText } from "../components/motion";
+import { RevealText } from "../components/motion";
 import { SectionLabel, Tag } from "../components/ui/SectionLabel";
 import { TextLink } from "../components/ui/TextLink";
-import { copy, phone, profile, stats } from "../content/profile";
+import { copy, phone, profile } from "../content/profile";
 import { projectCategories, projects } from "../content/projects";
-import { skillCategories, skills } from "../content/skills";
-
-export function InterimAbout() {
-  return (
-    <section id="about" className="container-x py-section">
-      <SectionLabel index="01">{copy.aboutEyebrow}</SectionLabel>
-      <RevealText as="h2" by="words" className="t-h1 mt-8 max-w-[16ch]">
-        {copy.aboutHeading}
-      </RevealText>
-      <FadeIn className="t-lead mt-10 max-w-3xl text-muted">{profile.description}</FadeIn>
-      <dl className="mt-16 grid gap-px border-y border-line bg-line sm:grid-cols-3">
-        {stats.map((s) => (
-          <div key={s.label} className="bg-bg py-8 sm:px-6">
-            <dt className="t-label text-muted">{s.label}</dt>
-            <dd className="t-h1 mt-3">{s.value}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-  );
-}
 
 export function InterimWork() {
   const label = (key: string) => projectCategories.find((c) => c.key === key)?.label ?? key;
@@ -55,32 +33,6 @@ export function InterimWork() {
           </li>
         ))}
       </ol>
-    </section>
-  );
-}
-
-export function InterimSkills() {
-  return (
-    <section id="skills" className="container-x py-section">
-      <SectionLabel index="03">{copy.skillsEyebrow}</SectionLabel>
-      <RevealText as="h2" by="words" className="t-h1 mt-8">
-        {copy.skillsHeading}
-      </RevealText>
-      <p className="t-lead mt-8 max-w-2xl text-muted">{copy.skillsIntro}</p>
-      <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
-        {skillCategories.map((c) => (
-          <div key={c.key}>
-            <h3 className="t-label text-accent">{c.label}</h3>
-            <ul className="mt-4 space-y-1.5">
-              {skills
-                .filter((s) => s.category === c.key)
-                .map((s) => (
-                  <li key={s.name}>{s.name}</li>
-                ))}
-            </ul>
-          </div>
-        ))}
-      </div>
     </section>
   );
 }

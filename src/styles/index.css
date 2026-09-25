@@ -285,3 +285,37 @@ html.theme-fading *::after {
     transform: translateY(200%);
   }
 }
+
+/* ScrubWords: each word mixes subtle → ink by its --p (0–1), set by GSAP. */
+@property --p {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+.scrub-word {
+  color: color-mix(in oklab, var(--fg) calc(var(--p) * 100%), var(--fg-subtle));
+}
+
+/* Outlined display type for decorative bands. */
+.t-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--fg);
+}
+@media (min-width: 64rem) {
+  .t-outline {
+    -webkit-text-stroke-width: 1.5px;
+  }
+}
+
+/* Skill index: hovering one skill quietly dims the rest of its group. */
+@media (hover: hover) and (pointer: fine) {
+  .skill-list:hover .skill-item > a {
+    opacity: 0.38;
+  }
+  .skill-list .skill-item > a:hover {
+    opacity: 1;
+  }
+}
+.skill-list .skill-item:last-child > span[aria-hidden] {
+  display: none;
+}

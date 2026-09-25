@@ -1,6 +1,9 @@
+export { Counter } from "./Counter";
+export { DrawLine } from "./DrawLine";
 export { FadeIn } from "./FadeIn";
 export { Magnetic } from "./Magnetic";
 export { Parallax } from "./Parallax";
 export { RevealText } from "./RevealText";
 export { ScrollReveal } from "./ScrollReveal";
+export { ScrubWords } from "./ScrubWords";
 export { Stagger } from "./Stagger";
