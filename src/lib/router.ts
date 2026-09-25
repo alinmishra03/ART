@@ -28,6 +28,8 @@ export function usePathname() {
 export function pushPath(href: string) {
   const url = new URL(href, window.location.href);
   if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+  // Remember where we were so Back can restore it (see useRestoredScroll).
+  window.history.replaceState({ ...(window.history.state ?? {}), scrollY: window.scrollY }, "");
   window.history.pushState({}, "", url.pathname + url.search + url.hash);
   window.dispatchEvent(new Event(NAV_EVENT));
 }
@@ -38,4 +40,10 @@ export const isInternalHref = (href: string) => {
   } catch {
     return false;
   }
+};
+
+/** Scroll position saved on the current history entry, if any. */
+export const savedScrollY = (): number | null => {
+  const y = (window.history.state as { scrollY?: number } | null)?.scrollY;
+  return typeof y === "number" ? y : null;
 };

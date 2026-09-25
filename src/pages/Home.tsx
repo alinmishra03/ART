@@ -1,22 +1,18 @@
-import { useEffect } from "react";
 import { Nav } from "../components/layout/Nav";
 import { useIntro } from "../providers/Intro";
-import { useScrollTo } from "../providers/SmoothScroll";
+import { usePageMeta } from "../lib/meta";
+import { useRouteScroll } from "../lib/useRouteScroll";
 import { Hero } from "../sections/hero/Hero";
 import { About } from "../sections/about/About";
-import { InterimContact, InterimWork } from "../sections/Interim";
+import { InterimContact } from "../sections/Interim";
 import { Skills } from "../sections/skills/Skills";
+import { Work } from "../sections/work/Work";
 
 export function Home() {
   const { ready } = useIntro();
-  const scrollTo = useScrollTo();
-
-  // Honour deep links such as /#projects once the intro has lifted.
-  useEffect(() => {
-    if (!ready || !window.location.hash) return;
-    const target = document.querySelector(window.location.hash);
-    if (target) scrollTo(target as HTMLElement, { immediate: true });
-  }, [ready, scrollTo]);
+  usePageMeta({});
+  // Deep links (/#projects), Back/Forward restoration, else top.
+  useRouteScroll(ready);
 
   return (
     <>
@@ -31,7 +27,7 @@ export function Home() {
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
         <About />
-        <InterimWork />
+        <Work />
         <Skills />
         <InterimContact />
       </main>

@@ -21,8 +21,11 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
   const swap = useCallback(
     (href: string) => {
       pushPath(href);
-      if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
-      else window.scrollTo(0, 0);
+      // A #hash target is scrolled to by the destination page once it mounts.
+      if (!href.includes("#")) {
+        if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+        else window.scrollTo(0, 0);
+      }
       requestAnimationFrame(() => ScrollTrigger.refresh());
     },
     [lenis],

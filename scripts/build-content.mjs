@@ -55,4 +55,16 @@ writeFileSync(
     `export const emailjsConfig = ${lit({ publicKey: emailjs.publicKey, serviceId: emailjs.serviceId, templateId: emailjs.templateId })} as const;\n`,
 );
 
+// Sitemap: home plus one page per project.
+const SITE = "https://aishwaryarajtyagi.com";
+const today = new Date().toISOString().slice(0, 10);
+const urls = [{ loc: `${SITE}/`, priority: "1.0" }, ...projects.map((p) => ({ loc: `${SITE}/work/${p.id}`, priority: "0.8" }))];
+const entries = urls.map(
+  (u) => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${u.priority}</priority>\n  </url>`,
+);
+writeFileSync(
+  "public/sitemap.xml",
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.join("\n")}\n</urlset>\n`,
+);
+
 console.log(`projects: ${projects.length}, skills: ${skills.length}, categories: ${skillCategories.length}`);

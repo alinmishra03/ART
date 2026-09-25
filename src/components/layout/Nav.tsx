@@ -3,7 +3,9 @@ import { navItems, type SectionId } from "../../content/nav";
 import { profile } from "../../content/profile";
 import { EASE, gsap, MQ, ScrollTrigger, useGSAP } from "../../lib/motion";
 import { useMediaQuery } from "../../lib/useMediaQuery";
+import { usePathname } from "../../lib/router";
 import { useIntro } from "../../providers/Intro";
+import { usePageTransition } from "../../providers/PageTransition";
 import { useScrollTo } from "../../providers/SmoothScroll";
 import { Magnetic } from "../motion/Magnetic";
 import { Button } from "../ui/Button";
@@ -26,6 +28,8 @@ export function Nav() {
   const menuOpenRef = useRef(false);
   menuOpenRef.current = menuOpen;
   const scrollTo = useScrollTo();
+  const onHome = usePathname() === "/";
+  const { navigate } = usePageTransition();
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   const wide = useMediaQuery("(min-width: 48rem)");
 
@@ -37,9 +41,11 @@ export function Nav() {
   const goTo = useCallback(
     (event: MouseEvent<HTMLAnchorElement>, id: string) => {
       event.preventDefault();
-      scrollTo(`#${id}`);
+      // Off the home page, sections are reached through the page transition.
+      if (!onHome) navigate(id === "home" ? "/" : `/#${id}`);
+      else scrollTo(`#${id}`);
     },
-    [scrollTo],
+    [scrollTo, onHome, navigate],
   );
 
   // Entrance, gated on the intro.
@@ -126,7 +132,7 @@ export function Nav() {
           <div data-nav-item data-fade="">
             <Magnetic strength={0.2}>
               <a
-                href="#home"
+                href="/"
                 onClick={(e) => goTo(e, "home")}
                 aria-label={`${profile.name}, back to top`}
                 className="group/roll flex min-h-11 items-center text-lg font-semibold tracking-tight"
@@ -150,7 +156,7 @@ export function Nav() {
                 return (
                   <li key={id} data-nav-item data-fade="">
                     <a
-                      href={`#${id}`}
+                      href={`/#${id}`}
                       onClick={(e) => goTo(e, id)}
                       aria-current={isActive ? "location" : undefined}
                       className={`group/roll t-label flex min-h-11 items-center gap-2 px-3 transition-colors duration-300 ${isActive ? "text-fg" : "text-muted hover:text-fg"}`}
@@ -175,7 +181,7 @@ export function Nav() {
               <ThemeToggle />
             </div>
             <div data-nav-item data-fade="" className="hidden md:block">
-              <Button href="#contact" onClick={(e) => goTo(e, "contact")} size="sm" icon={ArrowRight}>
+              <Button href="/#contact" onClick={(e) => goTo(e, "contact")} size="sm" icon={ArrowRight}>
                 Get in Touch
               </Button>
             </div>
@@ -208,7 +214,7 @@ export function Nav() {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} onClose={closeMenu} returnFocus={menuButton} active={active} />
+      <MobileMenu open={menuOpen} onClose={closeMenu} returnFocus={menuButton} active={active} onHome={onHome} />
     </>
   );
 }

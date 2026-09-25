@@ -5,6 +5,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant fine (@media (hover: hover) and (pointer: fine));
 @custom-variant motion-ok (@media (prefers-reduced-motion: no-preference));
+/* Desktop with motion allowed: layouts that only make sense with pinned scrolling. */
+@custom-variant pin (@media (min-width: 64rem) and (prefers-reduced-motion: no-preference));
 
 @theme inline {
   --color-bg: var(--bg);
@@ -318,4 +320,14 @@ html.theme-fading *::after {
 }
 .skill-list .skill-item:last-child > span[aria-hidden] {
   display: none;
+}
+
+/* Project index: hovering a row recedes the others. */
+@media (hover: hover) and (pointer: fine) {
+  .index-list:hover .index-row .row-main {
+    opacity: 0.35;
+  }
+  .index-list .index-row .row-main:hover {
+    opacity: 1;
+  }
 }

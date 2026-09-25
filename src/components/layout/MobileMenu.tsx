@@ -2,6 +2,7 @@ import { useEffect, useRef, type MouseEvent, type RefObject } from "react";
 import { copy, profile } from "../../content/profile";
 import { navItems, type SectionId } from "../../content/nav";
 import { EASE, gsap, prefersReducedMotion } from "../../lib/motion";
+import { usePageTransition } from "../../providers/PageTransition";
 import { useLenis, useScrollTo } from "../../providers/SmoothScroll";
 import { GitHub, LinkedIn, Mail } from "../ui/icons";
 
@@ -10,6 +11,7 @@ interface MobileMenuProps {
   onClose: () => void;
   returnFocus: RefObject<HTMLButtonElement | null>;
   active: SectionId | null;
+  onHome: boolean;
 }
 
 /**
@@ -18,13 +20,14 @@ interface MobileMenuProps {
  * closes on Escape and returns focus to the menu button. Choosing a link jumps
  * the page behind the cover, then the cover lifts to reveal the section.
  */
-export function MobileMenu({ open, onClose, returnFocus, active }: MobileMenuProps) {
+export function MobileMenu({ open, onClose, returnFocus, active, onHome }: MobileMenuProps) {
   const root = useRef<HTMLDivElement>(null);
   const wasOpen = useRef(open);
   const lenis = useLenis();
   const lenisRef = useRef(lenis);
   lenisRef.current = lenis;
   const scrollTo = useScrollTo();
+  const { navigate } = usePageTransition();
 
   // Acts only on real open/close transitions, never on unrelated re-renders.
   useEffect(() => {
@@ -74,8 +77,9 @@ export function MobileMenu({ open, onClose, returnFocus, active }: MobileMenuPro
 
   const choose = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault();
-    scrollTo(`#${id}`, { immediate: true });
     onClose();
+    if (onHome) scrollTo(`#${id}`, { immediate: true });
+    else navigate(`/#${id}`);
   };
 
   return (
@@ -94,7 +98,7 @@ export function MobileMenu({ open, onClose, returnFocus, active }: MobileMenuPro
           {navItems.map(({ id, label }, i) => (
             <li key={id} className="border-b border-line">
               <a
-                href={`#${id}`}
+                href={`/#${id}`}
                 onClick={(e) => choose(e, id)}
                 tabIndex={open ? 0 : -1}
                 aria-current={active === id ? "location" : undefined}
