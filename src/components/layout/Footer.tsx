@@ -67,10 +67,10 @@ export function Footer() {
 
           <nav aria-label="Footer" className="col-span-2 md:col-span-3 lg:col-span-2 lg:col-start-7">
             <p className="t-label text-subtle">Navigate</p>
-            <ul className="mt-4 space-y-1">
+            <ul className="mt-3">
               {navItems.map(({ id, label }) => (
                 <li key={id}>
-                  <a href={`/#${id}`} onClick={(e) => go(e, id)} className="group/roll inline-flex min-h-9 items-center text-lg">
+                  <a href={`/#${id}`} onClick={(e) => go(e, id)} className="group/roll inline-flex min-h-11 min-w-11 items-center text-lg">
                     <RollText>{label}</RollText>
                   </a>
                 </li>
@@ -80,13 +80,13 @@ export function Footer() {
 
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <p className="t-label text-subtle">Elsewhere</p>
-            <ul className="mt-4 space-y-1">
+            <ul className="mt-3">
               {socials.map(({ href, label, Icon, external }) => (
                 <li key={label}>
                   <a
                     href={href}
                     {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="group/roll inline-flex min-h-9 items-center gap-2 text-lg"
+                    className="group/roll inline-flex min-h-11 items-center gap-2 text-lg"
                   >
                     <Icon size={15} />
                     <RollText>{label}</RollText>

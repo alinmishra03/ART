@@ -19,7 +19,7 @@ export function Home() {
     <>
       <a
         href="#main"
-        className="t-label fixed left-gutter top-3 -translate-y-24 rounded-full bg-fg px-4 py-3 text-bg focus:translate-y-0"
+        className="t-label fixed left-gutter top-3 inline-flex min-h-11 -translate-y-24 items-center rounded-full bg-fg px-4 text-bg focus:translate-y-0"
         style={{ zIndex: "var(--z-cursor)" }}
       >
         Skip to content

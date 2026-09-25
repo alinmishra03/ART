@@ -72,7 +72,7 @@ export function Contact() {
   );
 
   return (
-    <section ref={section} id="contact" data-hide-dock aria-labelledby="contact-title" className="surface-invert relative bg-bg py-section">
+    <section ref={section} id="contact" data-hide-dock aria-labelledby="contact-title" className="surface-invert relative overflow-x-clip bg-bg py-section">
       <div className="container-x">
         <div className="flex items-center justify-between gap-6">
           <SectionLabel index="04">{copy.contactEyebrow}</SectionLabel>

@@ -4,6 +4,8 @@ import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
+// Mobile address bars resize the viewport while scrolling; don't re-measure for that.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 /** Media queries shared by every animated component (use with gsap.matchMedia). */
 export const MQ = {

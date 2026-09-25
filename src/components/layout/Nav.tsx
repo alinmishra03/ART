@@ -158,7 +158,7 @@ export function Nav() {
                 href="/"
                 onClick={(e) => goTo(e, "home")}
                 aria-label={`${profile.name}, back to top`}
-                className="group/roll flex min-h-11 items-center text-lg font-semibold tracking-tight"
+                className="group/roll flex min-h-11 min-w-11 items-center text-lg font-semibold tracking-tight"
               >
                 <RollText>
                   <span className="flex items-baseline gap-3">
@@ -203,7 +203,7 @@ export function Nav() {
             <div data-nav-item data-fade="">
               <ThemeToggle />
             </div>
-            <div data-nav-item data-fade="" className="hidden md:block">
+            <div data-nav-item data-fade="" className="hidden lg:block">
               <Button href="/#contact" onClick={(e) => goTo(e, "contact")} size="sm" icon={ArrowRight}>
                 Get in Touch
               </Button>

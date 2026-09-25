@@ -115,7 +115,11 @@ export function FloatingCodeCard({ play, bounds }: { play: boolean; bounds: RefO
   );
 }
 
-/** Phones and tablets (below lg): sits in the hero's open space, static and tilted. Hidden lg–xl, where the name fills the width. */
+/**
+ * Phones and tablets (below lg): sits in the hero's open space, static and tilted.
+ * Only on screens at least 820px tall, so shorter phones and landscape show
+ * name, bio and CTAs in the first viewport. Hidden lg–xl, where the name fills the width.
+ */
 export function InlineCodeCard({ play }: { play: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -139,9 +143,9 @@ export function InlineCodeCard({ play }: { play: boolean }) {
   );
 
   return (
-    <div aria-hidden className="flex flex-1 items-center justify-center py-4 lg:hidden">
+    <div aria-hidden className="flex flex-1 items-center justify-center py-4 lg:hidden [@media(max-height:819px)]:hidden">
       <div ref={ref} data-fade="">
-        <CardBody className="w-[min(21rem,calc(100vw-3rem))] text-[0.7rem] sm:text-[0.8rem]" />
+        <CardBody className="w-max max-w-[calc(100vw-3rem)] text-[0.7rem] sm:text-[0.8rem]" />
       </div>
     </div>
   );

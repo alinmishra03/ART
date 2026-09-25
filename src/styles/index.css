@@ -51,6 +51,7 @@
 
 @layer base {
   html {
+    -webkit-tap-highlight-color: transparent;
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-sans);
@@ -162,7 +163,9 @@
     width: 100%;
     max-width: var(--max-w);
     margin-inline: auto;
-    padding-inline: var(--gutter);
+    /* Never under a notch in landscape (viewport-fit=cover). */
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
   }
 
   .grid-12 {
@@ -330,5 +333,14 @@ html.theme-fading *::after {
   }
   .index-list .index-row .row-main:hover {
     opacity: 1;
+  }
+}
+
+/* Touch: a quiet press response in place of the grey tap flash. */
+@media (hover: none) {
+  a:active,
+  button:active {
+    opacity: 0.72;
+    transition: opacity 80ms;
   }
 }

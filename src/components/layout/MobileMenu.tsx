@@ -90,7 +90,7 @@ export function MobileMenu({ open, onClose, returnFocus, active, onHome }: Mobil
       aria-modal="true"
       aria-label="Site menu"
       aria-hidden={!open}
-      className="invisible fixed inset-0 flex flex-col justify-between bg-bg px-gutter pb-8 pt-[calc(var(--nav-h)+2rem)] md:hidden"
+      className="invisible fixed inset-0 flex flex-col justify-between overflow-y-auto overscroll-contain bg-bg pb-[max(2rem,env(safe-area-inset-bottom))] pl-[max(var(--gutter),env(safe-area-inset-left))] pr-[max(var(--gutter),env(safe-area-inset-right))] pt-[calc(var(--nav-h)+2rem)] md:hidden"
       style={{ zIndex: "var(--z-menu)" }}
     >
       <nav aria-label="Primary">

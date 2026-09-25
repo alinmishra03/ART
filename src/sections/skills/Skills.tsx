@@ -171,7 +171,7 @@ function SkillIndex({ entries }: { entries: Entry[] }) {
               as="ul"
               y={18}
               stagger={0.035}
-              className="skill-list col-span-4 flex flex-wrap items-baseline gap-x-[0.55em] gap-y-2 md:col-span-8 lg:col-span-9"
+              className="skill-list col-span-4 flex flex-wrap items-center gap-x-[0.55em] md:col-span-8 lg:col-span-9"
             >
               {items.map((entry) => (
                 <li key={entry.name} className="skill-item">
@@ -183,11 +183,11 @@ function SkillIndex({ entries }: { entries: Entry[] }) {
                     onPointerLeave={fine ? hide : undefined}
                     onFocus={fine ? (e) => onFocusSkill(entry, e) : undefined}
                     onBlur={fine ? hide : undefined}
-                    className="relative inline-flex items-start gap-1 text-[clamp(1.75rem,1.1rem+2.4vw,3.6rem)] font-semibold leading-[1.08] tracking-[-0.035em] transition-[color,opacity] duration-300 hover:text-accent focus-visible:text-accent"
+                    className="relative inline-flex min-h-11 min-w-11 items-start gap-1 py-1 text-[clamp(1.75rem,1.1rem+2.4vw,3.6rem)] font-semibold leading-[1.08] tracking-[-0.035em] transition-[color,opacity] duration-300 hover:text-accent focus-visible:text-accent"
                   >
                     {entry.name}
                     {entry.usedIn.length > 0 && (
-                      <sup className="t-label mt-[0.4em] text-[0.65rem] font-normal tracking-normal text-accent md:text-[0.7rem]">
+                      <sup className="t-label mt-[0.4em] text-[0.75rem] font-normal tracking-normal text-accent">
                         {entry.usedIn.length}
                       </sup>
                     )}

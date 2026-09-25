@@ -78,10 +78,10 @@ export function Hero() {
 
         {/* Bio, CTAs, scroll cue */}
         <div data-hero-bottom className="grid-12 items-end gap-y-8">
-          <FadeIn trigger="mount" play={ready} delay={0.75} className="col-span-4 md:col-span-5 lg:col-span-5">
+          <FadeIn trigger="mount" play={ready} delay={0.75} className="col-span-4 md:col-span-8 lg:col-span-5">
             <p className="t-lead max-w-[34ch] text-muted">{profile.shortBio}</p>
           </FadeIn>
-          <FadeIn trigger="mount" play={ready} delay={0.85} className="col-span-4 md:col-span-3 lg:col-span-5 lg:col-start-7 xl:col-span-4">
+          <FadeIn trigger="mount" play={ready} delay={0.85} className="col-span-4 md:col-span-8 lg:col-span-5 lg:col-start-7 xl:col-span-4">
             <div className="flex flex-wrap gap-3">
               <Button
                 href="#projects"

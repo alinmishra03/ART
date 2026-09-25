@@ -17,7 +17,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={() => toggleTheme(ref.current)}
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
       aria-pressed={dark}
-      className={`group/theme inline-flex min-h-11 items-center gap-2.5 rounded-full px-2 text-fg ${className}`}
+      className={`group/theme inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 rounded-full px-2 text-fg ${className}`}
     >
       <span aria-hidden className="relative block size-4 overflow-hidden rounded-full bg-fg">
         <span

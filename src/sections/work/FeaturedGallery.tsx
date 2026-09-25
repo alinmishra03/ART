@@ -50,6 +50,8 @@ export function FeaturedGallery() {
           },
         });
         trigger.current = tween.scrollTrigger ?? null;
+        // The call dock would sit on the progress row while pinned.
+        wrap.current?.setAttribute("data-hide-dock", "");
 
         gsap.utils.toArray<HTMLElement>("[data-card]", t).forEach((card) => {
           const media = card.querySelector("[data-card-media]");
@@ -76,6 +78,7 @@ export function FeaturedGallery() {
 
         return () => {
           trigger.current = null;
+          wrap.current?.removeAttribute("data-hide-dock");
         };
       });
       return () => mm.revert();
