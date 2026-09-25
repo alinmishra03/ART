@@ -28,7 +28,8 @@ export function Nav() {
   const menuOpenRef = useRef(false);
   menuOpenRef.current = menuOpen;
   const scrollTo = useScrollTo();
-  const onHome = usePathname() === "/";
+  const pathname = usePathname();
+  const onHome = pathname === "/";
   const { navigate } = usePageTransition();
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   const wide = useMediaQuery("(min-width: 48rem)");
@@ -115,6 +116,28 @@ export function Nav() {
     });
     return () => triggers.forEach((t) => t?.kill());
   }, []);
+
+  // Take on the inverted palette while over an inverted section (Contact, footer).
+  useEffect(() => {
+    const el = header.current!;
+    const active = new Set<Element>();
+    const triggers = [...document.querySelectorAll("main .surface-invert, footer.surface-invert")].map((section) =>
+      ScrollTrigger.create({
+        trigger: section,
+        start: () => `top top+=${el.offsetHeight / 2}`,
+        end: () => `bottom top+=${el.offsetHeight / 2}`,
+        onToggle: (self) => {
+          if (self.isActive) active.add(section);
+          else active.delete(section);
+          el.classList.toggle("surface-invert", active.size > 0);
+        },
+      }),
+    );
+    return () => {
+      triggers.forEach((t) => t.kill());
+      el.classList.remove("surface-invert");
+    };
+  }, [pathname]);
 
   useEffect(() => {
     if (menuOpen) gsap.to(header.current, { yPercent: 0, duration: 0.3, overwrite: true });

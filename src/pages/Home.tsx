@@ -4,7 +4,8 @@ import { usePageMeta } from "../lib/meta";
 import { useRouteScroll } from "../lib/useRouteScroll";
 import { Hero } from "../sections/hero/Hero";
 import { About } from "../sections/about/About";
-import { InterimContact } from "../sections/Interim";
+import { Footer } from "../components/layout/Footer";
+import { Contact } from "../sections/contact/Contact";
 import { Skills } from "../sections/skills/Skills";
 import { Work } from "../sections/work/Work";
 
@@ -29,8 +30,9 @@ export function Home() {
         <About />
         <Work />
         <Skills />
-        <InterimContact />
+        <Contact />
       </main>
+      <Footer />
     </>
   );
 }

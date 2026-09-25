@@ -55,7 +55,14 @@ export function Cursor() {
       ringY(e.clientY);
     };
 
+    let inverted = false;
     const onOver = (e: PointerEvent) => {
+      // Over an inverted surface the cursor takes that surface's tokens.
+      const inv = !!(e.target as Element | null)?.closest(".surface-invert");
+      if (inv !== inverted) {
+        inverted = inv;
+        r.classList.toggle("surface-invert", inv);
+      }
       const target = (e.target as Element | null)?.closest<HTMLElement>(INTERACTIVE);
       if (!target) return setState("default");
       if (target.matches(TEXT_FIELDS)) return setState("hide");

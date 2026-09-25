@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Footer } from "../components/layout/Footer";
 import { Nav } from "../components/layout/Nav";
 import { FadeIn, Parallax, RevealText, ScrollReveal, Stagger } from "../components/motion";
 import { Button } from "../components/ui/Button";
@@ -133,6 +134,7 @@ export function ProjectPage({ project: p }: { project: Project }) {
 
         <NextProject project={next} />
       </main>
+      <Footer />
     </>
   );
 }

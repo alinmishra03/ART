@@ -22,6 +22,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-inverse: var(--inverse-bg);
   --color-inverse-fg: var(--inverse-fg);
+  --color-danger: var(--danger);
 
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
