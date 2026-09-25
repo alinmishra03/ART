@@ -49,9 +49,13 @@ export function useScrollTo() {
   const reduced = useReducedMotion();
 
   return useCallback(
-    (target: ScrollTarget, { offset = 0, immediate = false }: { offset?: number; immediate?: boolean } = {}) => {
+    (
+      target: ScrollTarget,
+      { offset = 0, immediate = false }: { offset?: number; immediate?: boolean } = {},
+    ) => {
       if (lenis) {
-        lenis.scrollTo(target, { offset, immediate, duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4) });
+        // force: also works while Lenis is stopped (e.g. behind the open mobile menu).
+        lenis.scrollTo(target, { offset, immediate, force: true, duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4) });
         return;
       }
       let top: number;

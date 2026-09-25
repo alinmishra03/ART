@@ -26,7 +26,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
           }`}
         />
       </span>
-      <span aria-hidden className="t-label relative block h-[1.3em] overflow-hidden">
+      <span aria-hidden className="t-label relative hidden h-[1.3em] overflow-hidden sm:block">
         <span
           className={`block transition-transform duration-500 ease-out motion-reduce:transition-none ${dark ? "-translate-y-1/2" : "translate-y-0"}`}
         >

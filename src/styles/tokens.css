@@ -75,7 +75,7 @@
 
   /* ---- Layers ---- */
   --z-nav: 50;
-  --z-menu: 60;
+  --z-menu: 45; /* below the nav, which stays on top of the open menu */
   --z-transition: 80;
   --z-preloader: 90;
   --z-cursor: 100;

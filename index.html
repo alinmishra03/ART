@@ -67,12 +67,25 @@
     <style>
       html { background: #f1efea; }
       html.dark { background: #0e0e0d; }
+      /* Preloader cover paints on the first frame; React animates it away. */
+      #preloader { position: fixed; inset: 0; z-index: 90; background: #121211; color: #f1efea; }
+      html.dark #preloader { background: #ecebe6; color: #0e0e0d; }
+      #preloader[hidden] { display: none; }
+      @media (prefers-reduced-motion: reduce) { #preloader { display: none; } }
     </style>
+    <noscript><style>#preloader { display: none; }</style></noscript>
   </head>
   <body>
     <noscript>
       <p style="padding:2rem;font-family:system-ui">This portfolio needs JavaScript. You can reach Aishwarya Raj Tyagi at <a href="mailto:aishraj05@gmail.com">aishraj05@gmail.com</a>.</p>
     </noscript>
+    <div id="preloader" aria-hidden="true"></div>
+    <script>
+      // Failsafe: never leave the cover up if the app fails to take it over.
+      setTimeout(function () {
+        if (!window.__introTaken) document.getElementById("preloader").hidden = true;
+      }, 6000);
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -1,16 +1,25 @@
+import { lazy, Suspense } from "react";
 import { Cursor } from "./components/cursor/Cursor";
 import { usePathname } from "./lib/router";
+import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
-import { Styleguide } from "./pages/Styleguide";
+import { IntroProvider } from "./providers/Intro";
 import { PageTransitionProvider } from "./providers/PageTransition";
 import { SmoothScroll } from "./providers/SmoothScroll";
 import { ThemeProvider } from "./providers/ThemeProvider";
 
+// Design-system reference page, development builds only.
+const Styleguide = import.meta.env.DEV ? lazy(() => import("./pages/Styleguide").then((m) => ({ default: m.Styleguide }))) : null;
+
 function Routes() {
   const pathname = usePathname();
-  // Phase 2: the design-system page stands in for the home page until the
-  // real sections land in Phase 3.
-  if (pathname === "/") return <Styleguide />;
+  if (pathname === "/") return <Home />;
+  if (Styleguide && pathname === "/styleguide")
+    return (
+      <Suspense fallback={null}>
+        <Styleguide />
+      </Suspense>
+    );
   return <NotFound />;
 }
 
@@ -19,7 +28,9 @@ export function App() {
     <ThemeProvider>
       <SmoothScroll>
         <PageTransitionProvider>
-          <Routes />
+          <IntroProvider>
+            <Routes />
+          </IntroProvider>
           <Cursor />
           <div className="grain" aria-hidden />
         </PageTransitionProvider>

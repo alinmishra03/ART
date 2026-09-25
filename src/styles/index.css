@@ -275,3 +275,13 @@ html.theme-fading *::after {
   padding-block: 0.1em 0.16em;
   margin-block: -0.1em -0.16em;
 }
+
+/* Hero scroll cue: a short segment travelling down a hairline. */
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
