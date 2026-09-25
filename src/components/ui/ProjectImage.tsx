@@ -8,6 +8,8 @@ interface ProjectImageProps {
   className?: string;
   /** Above-the-fold images load eagerly with high priority. */
   priority?: boolean;
+  /** Never display wider than the source pixels (no upscaling of small screenshots). */
+  capToNative?: boolean;
 }
 
 const srcSet = (id: string, widths: number[], ext: string) =>
@@ -17,7 +19,7 @@ const srcSet = (id: string, widths: number[], ext: string) =>
  * AVIF/WebP responsive screenshot with intrinsic dimensions (no layout shift)
  * and a blurred inline placeholder while it loads.
  */
-export function ProjectImage({ id, alt, sizes = "100vw", className = "", priority = false }: ProjectImageProps) {
+export function ProjectImage({ id, alt, sizes = "100vw", className = "", priority = false, capToNative = false }: ProjectImageProps) {
   const meta = projectImages[id];
   if (!meta) return null;
   const largest = meta.widths.at(-1)!;
@@ -35,7 +37,12 @@ export function ProjectImage({ id, alt, sizes = "100vw", className = "", priorit
         fetchPriority={priority ? "high" : "auto"}
         decoding="async"
         className={className}
-        style={{ backgroundImage: `url(${meta.placeholder})`, backgroundSize: "cover" }}
+        style={{
+          backgroundImage: `url(${meta.placeholder})`,
+          backgroundSize: "cover",
+          aspectRatio: `${meta.width} / ${meta.height}`,
+          ...(capToNative ? { maxWidth: `min(100%, ${meta.width}px)` } : {}),
+        }}
       />
     </picture>
   );

@@ -344,3 +344,15 @@ html.theme-fading *::after {
     transition: opacity 80ms;
   }
 }
+
+/* Project screenshots: the frame (never the image) lifts slightly on hover. */
+@media (hover: hover) and (pointer: fine) {
+  .group\/shot:hover .shot-frame {
+    transform: scale(1.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shot-frame {
+    transition: none;
+  }
+}

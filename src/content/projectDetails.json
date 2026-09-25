@@ -1,0 +1,57 @@
+{
+  "_note": "Every item below is an exact excerpt of that project's original long description (legacy/content-extracted.json). scripts/verify-content.mjs fails the build if one is not. Only the first letter may be capitalised for display.",
+  "alinkriti": [
+    { "title": "Features", "items": ["bespoke theme customization", "a curated product catalog", "optimized collection and product pages", "a smooth, secure checkout experience", "responsive layouts, fast load times"] }
+  ],
+  "sofisam": [
+    { "title": "Features", "items": ["a detailed five-phase 'Way of Working' engagement methodology", "an insights blog covering global markets and family office structuring", "contact forms", "newsletter subscription", "fully responsive layout and optimized WebP imagery"] }
+  ],
+  "gulf-connect-consultancy": [
+    { "title": "Features", "items": ["bilingual English/Arabic website", "services including Investor Roadshows, The Gulf Programme, Media & Arabic Communications, and Advisory", "dedicated sections for investors and insights", "a structured enquiry form for engagement requests", "a newsletter signup"] }
+  ],
+  "country-kids": [
+    { "title": "Features", "items": ["seven age-based rooms from infants to pre-kindergarten", "a thematic, play-based curriculum incorporating First Nations perspectives", "government-funded kindergarten programs", "child-safety compliance", "fees and Child Care Subsidy information", "an enrolment call-to-action"] }
+  ],
+  "trux360": [
+    { "title": "Connects", "items": ["fuel distributors (Organisations)", "fleet managers (Transporters)", "ground tracking personnel (Trackies)", "operational runners (Runners)", "border custom clearing professionals (Clearing Agents)"] },
+    { "title": "Features", "items": ["audit-proof, and real-time tracking of fuel shipments"] }
+  ],
+  "tasknest": [
+    { "title": "Features", "items": ["a side panel interface that provides quick access to your tasks without leaving your current tab", "list, board, and calendar views", "natural language processing to let you capture tasks effortlessly"] }
+  ],
+  "bridge18": [
+    { "title": "Features", "items": ["real-time tracking", "route optimization", "performance analytics", "an intuitive dashboard for managing large-scale logistics operations", "monitoring vehicle health"] }
+  ],
+  "auto-connex": [
+    { "title": "Features", "items": ["large language models", "voice-based interactions via ElevenLabs", "real-time conversational AI"] },
+    { "title": "Architecture", "items": ["a Hono-based edge API layer", "Node.js services", "a FastAPI Python backend for AI processing", "a React.js frontend", "Better Auth for secure authentication"] }
+  ],
+  "zerocaters": [
+    { "title": "Features", "items": ["bulk order booking", "menu selection", "order management", "delivery scheduling", "payment processing"] }
+  ],
+  "demisty5": [
+    { "title": "Features", "items": ["unlimited threat checks", "real-time alerts", "modules for digital privacy, email security, and social media protection"] }
+  ],
+  "yourdmarc": [
+    { "title": "Features", "items": ["SPF, DKIM, and DMARC compliance", "advanced reporting", "real-time monitoring", "domain security insights"] }
+  ],
+  "generic-ideas": [
+    { "title": "Features", "items": ["category browsing", "secure SSL-encrypted checkout", "gift wrapping options", "same-day delivery in select cities", "a rich product detail experience"] }
+  ],
+  "golden-harvest-mango": [
+    { "title": "Features", "items": ["browse different mango varieties", "manage their cart", "place orders smoothly", "an integrated checkout system"] }
+  ],
+  "snapshot-pro": [
+    { "title": "Features", "items": ["full-page and visible-area capture", "sticky-header de-duplication", "floating widget hiding", "configurable format and quality (PNG/JPEG)", "filename templates", "auto-download", "copy to clipboard", "full keyboard control"] }
+  ],
+  "chrome-extension": [
+    { "title": "Features", "items": ["real-time data from Firebase", "privacy-safe site tracking via Chrome History API", "cross-device synchronization"] }
+  ],
+  "paint-memories": [
+    { "title": "Features", "items": ["various styles including Traditional Oil Paint and Classic Watercolour", "a seamless selection flow", "secure checkout", "professional-grade AI image transformation"] }
+  ],
+  "bestow-india": [],
+  "trackyoursecurity": [
+    { "title": "Features", "items": ["live 24/7 human-verified monitoring", "interactive dashboard mock displaying real-time access point status, signal strength, threat levels, and encrypted data channels", "rich micro-animations", "custom SVG indicators"] }
+  ]
+}
