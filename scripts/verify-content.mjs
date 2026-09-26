@@ -1,7 +1,8 @@
 // Guards against invented project content: every feature item shown on the
 // site must be an exact (case-insensitive) excerpt of that project's original
-// long description, and every project must have an entry.
-import { readFileSync } from "node:fs";
+// long description, and every project must have an entry. Also checks that
+// every project has its share card (scripts/og-images.mjs, npm run og).
+import { existsSync, readFileSync } from "node:fs";
 
 const source = JSON.parse(readFileSync("legacy/content-extracted.json", "utf8"));
 const details = JSON.parse(readFileSync("src/content/projectDetails.json", "utf8"));
@@ -19,6 +20,9 @@ for (const p of source.projects) {
       if (!haystack.includes(item.toLowerCase())) problems.push(`${p.id}: "${item}" is not in the original description`);
     }
   }
+}
+for (const file of ["site", ...source.projects.map((p) => p.id)].map((id) => `public/og/${id}.jpg`)) {
+  if (!existsSync(file)) problems.push(`${file}: missing share card (run npm run og)`);
 }
 for (const id of Object.keys(details)) {
   if (!id.startsWith("_") && !source.projects.some((p) => p.id === id)) problems.push(`${id}: unknown project`);

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, SITE_URL } from "./seo";
+import { DEFAULT_DESCRIPTION, DEFAULT_IMAGE, DEFAULT_TITLE, SITE_URL } from "./seo";
 
 function setMeta(selector: string, attr: "content" | "href", value: string) {
   document.head.querySelector(selector)?.setAttribute(attr, value);
@@ -9,7 +9,17 @@ function setMeta(selector: string, attr: "content" | "href", value: string) {
  * Keeps title, description, canonical and Open Graph/Twitter tags in sync
  * with the current route (the static tags in index.html are the defaults).
  */
-export function usePageMeta({ title = DEFAULT_TITLE, description = DEFAULT_DESCRIPTION, path = "/" }: { title?: string; description?: string; path?: string }) {
+export function usePageMeta({
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  path = "/",
+  image = DEFAULT_IMAGE,
+}: {
+  title?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+}) {
   useEffect(() => {
     const url = SITE_URL + path;
     document.title = title;
@@ -20,5 +30,7 @@ export function usePageMeta({ title = DEFAULT_TITLE, description = DEFAULT_DESCR
     setMeta('meta[property="og:description"]', "content", description);
     setMeta('meta[name="twitter:title"]', "content", title);
     setMeta('meta[name="twitter:description"]', "content", description);
-  }, [title, description, path]);
+    for (const sel of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) setMeta(sel, "content", SITE_URL + image);
+    for (const sel of ['meta[property="og:image:alt"]', 'meta[name="twitter:image:alt"]']) setMeta(sel, "content", title);
+  }, [title, description, path, image]);
 }
