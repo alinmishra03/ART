@@ -47,7 +47,7 @@ export function About() {
           <DrawLine className="hidden flex-1 md:block" />
         </div>
 
-        <h2 id="about-title" className="t-display mt-10 md:mt-14">
+        <h2 id="about-title" className="t-display mt-8 md:mt-10">
           <RevealText as="span" by="lines" className="block">
             {lead} that
           </RevealText>
@@ -56,7 +56,7 @@ export function About() {
           </RevealText>
         </h2>
 
-        <div className="grid-12 mt-16 gap-y-12 md:mt-24">
+        <div className="grid-12 mt-10 gap-y-10 md:mt-14">
           <div className="col-span-4 md:col-span-8 lg:col-span-3">
             <div className="lg:sticky lg:top-[calc(var(--nav-h)+2rem)]">
               <FadeIn>
@@ -71,7 +71,7 @@ export function About() {
             <ScrubWords className="text-[clamp(1.5rem,0.95rem+2.05vw,3.1rem)] font-medium leading-[1.2] tracking-[-0.025em]">
               {profile.description}
             </ScrubWords>
-            <FadeIn className="mt-12 flex flex-wrap gap-3">
+            <FadeIn className="mt-8 flex flex-wrap gap-3">
               <Button
                 href="#projects"
                 icon={ArrowRight}

@@ -85,7 +85,7 @@ function NextProject({ project: p }: { project: Project }) {
           {p.title}
           <ArrowRight size={48} className="ml-4 inline-block align-middle transition-transform duration-500 group-hover/next:translate-x-2" />
         </p>
-        <div ref={media} className="mx-auto mt-12 max-w-5xl">
+        <div ref={media} className="mx-auto mt-8 max-w-5xl">
           <ProjectShot project={p} decorative sizes="(min-width: 64rem) 64rem, 100vw" />
         </div>
       </a>

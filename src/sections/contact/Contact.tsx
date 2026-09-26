@@ -86,7 +86,7 @@ export function Contact() {
           </p>
         </div>
 
-        <h2 id="contact-title" data-contact-head className="t-display mt-12 md:mt-16">
+        <h2 id="contact-title" data-contact-head className="t-display mt-8 md:mt-10">
           <span data-contact-line="1" className="block">
             <RevealText as="span" by="words" className="block">
               {lead}
@@ -104,7 +104,7 @@ export function Contact() {
           </span>
         </h2>
 
-        <div className="grid-12 mt-16 items-center gap-y-12 md:mt-24">
+        <div className="grid-12 mt-10 items-center gap-y-10 md:mt-14">
           <FadeIn className="col-span-4 md:col-span-5 lg:col-span-6">
             <p className="t-lead text-muted">{copy.contactIntro}</p>
           </FadeIn>
@@ -124,7 +124,7 @@ export function Contact() {
           </div>
         </div>
 
-        <Stagger as="ul" className="mt-20 grid gap-px border-y border-line bg-line md:mt-28 md:grid-cols-2 lg:grid-cols-4" stagger={0.08}>
+        <Stagger as="ul" className="mt-12 grid gap-px border-y border-line bg-line md:mt-16 md:grid-cols-2 lg:grid-cols-4" stagger={0.08}>
           {CHANNELS.map((c) => (
             <li key={c.label} className="bg-bg">
               <a

@@ -57,7 +57,7 @@ export function Skills() {
         </div>
       </div>
 
-      <div className="mt-20 space-y-2 md:mt-28">
+      <div className="mt-12 space-y-2 md:mt-16">
         <Marquee speed={55} className="border-y border-line py-4">
           {rowA.map((s) => (
             <MarqueeItem key={s.name} name={s.name} />
@@ -156,7 +156,7 @@ function SkillIndex({ entries }: { entries: Entry[] }) {
       {skillCategories.map((category, ci) => {
         const items = entries.filter((e) => e.category === category.key);
         return (
-          <div key={category.key} className="grid-12 relative gap-y-6 pb-16 md:pb-24">
+          <div key={category.key} className="grid-12 relative gap-y-6 pb-10 md:pb-14">
             <DrawLine strong className="col-span-4 md:col-span-8 lg:col-span-12" />
             <div className="col-span-4 md:col-span-8 lg:col-span-3">
               <div className="lg:sticky lg:top-[calc(var(--nav-h)+1.5rem)]">

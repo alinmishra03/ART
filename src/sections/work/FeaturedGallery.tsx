@@ -98,7 +98,7 @@ export function FeaturedGallery() {
   };
 
   return (
-    <div ref={wrap} className="relative mt-20 overflow-clip md:mt-28 pin:mt-16 pin:h-svh">
+    <div ref={wrap} className="relative mt-12 overflow-clip md:mt-16 pin:mt-10 pin:h-svh">
       <div
         ref={track}
         onFocus={onFocus}

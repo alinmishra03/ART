@@ -23,7 +23,7 @@ export function NotFound() {
   }, []);
 
   return (
-    <main className="container-x flex min-h-svh flex-col justify-center gap-10 py-24">
+    <main className="container-x flex min-h-svh flex-col justify-center gap-10 py-16">
       <p className="t-label text-muted">Error 404</p>
       <RevealText as="h1" by="chars" trigger="mount" className="t-mega">
         Lost<span className="t-serif text-accent">?</span>

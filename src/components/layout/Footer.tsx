@@ -72,7 +72,7 @@ export function Footer() {
         <div className="footer-photo-wash absolute inset-0" />
       </div>
 
-      <div data-footer-inner className="footer-copy container-x relative isolate pt-20 md:pt-28">
+      <div data-footer-inner className="footer-copy container-x relative isolate pt-14 md:pt-16">
         <div className="grid-12 gap-y-12">
           <div className="col-span-4 md:col-span-8 lg:col-span-5">
             <p className="t-lead max-w-md text-muted">{profile.shortBio}</p>
@@ -130,7 +130,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col-reverse gap-3 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col-reverse gap-3 border-t border-line py-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="t-label text-subtle">
             © {year} {profile.name}. Crafted with React, Tailwind &amp; GSAP.
           </p>
