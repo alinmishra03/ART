@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from "react";
 import { DUR, EASE, gsap, MQ, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -23,9 +24,11 @@ const CLOSED: Record<NonNullable<ScrollRevealProps["from"]>, string> = {
 export function ScrollReveal({ children, className, from = "bottom", scale = 1.18, delay = 0, start = "top 85%" }: ScrollRevealProps) {
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
+  const near = useNearViewport(outer);
 
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         const tl = gsap.timeline({
@@ -42,7 +45,7 @@ export function ScrollReveal({ children, className, from = "bottom", scale = 1.1
       });
       return () => mm.revert();
     },
-    { scope: outer },
+    { dependencies: [near], scope: outer },
   );
 
   return (

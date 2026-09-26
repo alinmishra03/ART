@@ -1,5 +1,6 @@
 import { useRef, type ElementType, type ReactNode } from "react";
 import { DUR, EASE, gsap, MQ, REVEAL_START, STAGGER, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 interface StaggerProps {
   as?: ElementType;
@@ -26,18 +27,19 @@ export function Stagger({
   start = REVEAL_START,
 }: StaggerProps) {
   const ref = useRef<HTMLElement>(null);
+  const near = useNearViewport(ref, trigger === "scroll");
 
   useGSAP(
     () => {
       const el = ref.current;
-      if (!el || !play) return;
+      if (!el || !play || !near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         gsap.fromTo(
           el.children,
-          { autoAlpha: 0, y },
+          { opacity: 0, y },
           {
-            autoAlpha: 1,
+            opacity: 1,
             y: 0,
             duration: DUR.base,
             delay,
@@ -49,7 +51,7 @@ export function Stagger({
       });
       return () => mm.revert();
     },
-    { dependencies: [play], scope: ref },
+    { dependencies: [play, near], scope: ref },
   );
 
   return (

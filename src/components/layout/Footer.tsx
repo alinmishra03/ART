@@ -2,6 +2,7 @@ import { useRef, type MouseEvent } from "react";
 import { navItems } from "../../content/nav";
 import { copy, profile } from "../../content/profile";
 import { gsap, MQ, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 import { usePathname } from "../../lib/router";
 import { usePageTransition } from "../../providers/PageTransition";
 import { useScrollTo } from "../../providers/SmoothScroll";
@@ -16,6 +17,7 @@ import { RollText } from "../ui/RollText";
  */
 export function Footer() {
   const root = useRef<HTMLElement>(null);
+  const near = useNearViewport(root);
   const onHome = usePathname() === "/";
   const scrollTo = useScrollTo();
   const { navigate } = usePageTransition();
@@ -23,6 +25,7 @@ export function Footer() {
 
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         gsap.fromTo(
@@ -38,7 +41,7 @@ export function Footer() {
       });
       return () => mm.revert();
     },
-    { scope: root },
+    { dependencies: [near], scope: root },
   );
 
   const go = (e: MouseEvent<HTMLAnchorElement>, id: string) => {

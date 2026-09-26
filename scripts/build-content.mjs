@@ -31,7 +31,7 @@ const skills = src.skills
 writeFileSync(
   "src/content/projects.ts",
   header +
-    `import type { Project, ProjectCategory } from "./types";\n\n` +
+    `import type { Project, ProjectCategory } from "./types.ts";\n\n` +
     `export const projectCategories: ProjectCategory[] = ${lit(src.projectCategories)};\n\n` +
     `export const projects: Project[] = ${lit(projects)};\n`,
 );
@@ -39,7 +39,7 @@ writeFileSync(
 writeFileSync(
   "src/content/skills.ts",
   header +
-    `import type { Skill, SkillCategory } from "./types";\n\n` +
+    `import type { Skill, SkillCategory } from "./types.ts";\n\n` +
     `export const skillCategories: SkillCategory[] = ${lit(skillCategories)};\n\n` +
     `export const skills: Skill[] = ${lit(skills)};\n`,
 );

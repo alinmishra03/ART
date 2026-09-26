@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { EASE, gsap, MQ, REVEAL_START, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 /**
  * Counts up to a value like "15+" on first view. The final text is always in
@@ -7,11 +8,12 @@ import { EASE, gsap, MQ, REVEAL_START, useGSAP } from "../../lib/motion";
  */
 export function Counter({ value, className }: { value: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
+  const near = useNearViewport(ref);
   const match = value.match(/^(\d+)(.*)$/);
 
   useGSAP(
     () => {
-      if (!match) return;
+      if (!match || !near) return;
       const target = Number(match[1]);
       const suffix = match[2];
       const mm = gsap.matchMedia();
@@ -34,7 +36,7 @@ export function Counter({ value, className }: { value: string; className?: strin
       });
       return () => mm.revert();
     },
-    { scope: ref },
+    { dependencies: [near], scope: ref },
   );
 
   return (

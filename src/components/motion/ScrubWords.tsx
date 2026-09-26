@@ -1,5 +1,6 @@
 import { useRef, type ElementType, type ReactNode } from "react";
 import { gsap, MQ, SplitText, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 interface ScrubWordsProps {
   as?: ElementType;
@@ -18,9 +19,11 @@ interface ScrubWordsProps {
 export function ScrubWords({ as: Tag = "p", children, className, start = "top 82%", end = "bottom 55%" }: ScrubWordsProps) {
   const outer = useRef<HTMLElement>(null);
   const inner = useRef<HTMLSpanElement>(null);
+  const near = useNearViewport(outer);
 
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         const split = SplitText.create(inner.current, {
@@ -45,7 +48,7 @@ export function ScrubWords({ as: Tag = "p", children, className, start = "top 82
       });
       return () => mm.revert();
     },
-    { scope: outer },
+    { dependencies: [near], scope: outer },
   );
 
   return (

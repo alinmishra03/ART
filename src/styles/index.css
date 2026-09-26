@@ -197,13 +197,21 @@
  * Elements that animate in are hidden before JS runs only when motion is
  * allowed and JS is available (html.js is set by the inline head script),
  * so content is never lost with JS disabled or reduced motion.
+ * Blocks that can hold links are hidden with opacity, not visibility, so they
+ * stay in the tab order; focusing into one shows it straight away.
  */
 @media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal],
-  .js [data-fade],
-  .js [data-stagger] > * {
+  .js [data-reveal] {
     visibility: hidden;
   }
+  .js [data-fade],
+  .js [data-stagger] > * {
+    opacity: 0;
+  }
+}
+[data-fade]:focus-within,
+[data-stagger] > :focus-within {
+  opacity: 1 !important;
 }
 
 /* Lenis */

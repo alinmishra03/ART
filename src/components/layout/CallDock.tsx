@@ -1,11 +1,14 @@
-import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useId, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useId, useRef, useState } from "react";
 import { phone } from "../../content/profile";
 import { EASE, gsap, prefersReducedMotion, ScrollTrigger } from "../../lib/motion";
 import { usePathname } from "../../lib/router";
 import { useFinePointer } from "../../lib/useMediaQuery";
 import { useIntro } from "../../providers/Intro";
 import { Phone } from "../ui/icons";
+
+// The QR code is only drawn when the card opens; the pill preloads it on hover/focus.
+const loadQR = () => import("qrcode.react");
+const QRCodeSVG = lazy(() => loadQR().then((m) => ({ default: m.QRCodeSVG })));
 
 const DISMISS_KEY = "call-dock-hidden";
 const readDismissed = () => {
@@ -133,7 +136,7 @@ export function CallDock() {
     >
       {fine ? (
         <div className="relative">
-          <button type="button" aria-expanded={open} aria-controls={`${uid}-card`} onClick={() => setOpen((o) => !o)} className={pill}>
+          <button type="button" aria-expanded={open} aria-controls={`${uid}-card`} onClick={() => setOpen((o) => !o)} onPointerEnter={loadQR} onFocus={loadQR} className={pill}>
             {badge}
             <span className="t-label">Call</span>
           </button>
@@ -144,8 +147,12 @@ export function CallDock() {
             className="absolute bottom-[calc(100%+0.75rem)] left-0 w-64 rounded-md border border-line bg-bg-raised p-5 text-fg shadow-[0_30px_60px_-30px_rgb(0_0_0/0.45)]"
           >
             <p className="t-label text-accent">{phone.label}</p>
-            <div className="mt-4 rounded-sm bg-white p-3">
-              <QRCodeSVG value={`tel:${phone.tel}`} size={200} fgColor="#000000" bgColor="#ffffff" title={`QR code to call ${phone.tel}`} className="h-auto w-full" />
+            <div className="mt-4 aspect-square rounded-sm bg-white p-3">
+              {open && (
+                <Suspense fallback={null}>
+                  <QRCodeSVG value={`tel:${phone.tel}`} size={200} fgColor="#000000" bgColor="#ffffff" title={`QR code to call ${phone.tel}`} className="h-auto w-full" />
+                </Suspense>
+              )}
             </div>
             <a href={`tel:${phone.tel}`} className="mt-4 block text-xl font-semibold tracking-tight underline-offset-4 hover:underline">
               {phone.tel}

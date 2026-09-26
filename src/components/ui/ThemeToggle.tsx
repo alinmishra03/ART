@@ -15,8 +15,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       ref={ref}
       type="button"
       onClick={() => toggleTheme(ref.current)}
-      aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-      aria-pressed={dark}
+      // State first so the visible "Light"/"Dark" label is part of the name (WCAG 2.5.3).
+      aria-label={dark ? "Dark theme, switch to light" : "Light theme, switch to dark"}
       className={`group/theme inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 rounded-full px-2 text-fg ${className}`}
     >
       <span aria-hidden className="relative block size-4 overflow-hidden rounded-full bg-fg">

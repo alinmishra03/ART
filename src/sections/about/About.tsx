@@ -5,6 +5,7 @@ import { ArrowRight, Mail } from "../../components/ui/icons";
 import { SectionLabel } from "../../components/ui/SectionLabel";
 import { copy, profile, stats } from "../../content/profile";
 import { gsap, MQ, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 import { useScrollTo } from "../../providers/SmoothScroll";
 
 // Sectors named in the original description ("…across SaaS, fintech, logistics, and e-commerce").
@@ -17,10 +18,12 @@ const SECTORS = ["SaaS", "Fintech", "Logistics", "E-commerce"];
 export function About() {
   const scrollTo = useScrollTo();
   const band = useRef<HTMLDivElement>(null);
+  const bandNear = useNearViewport(band);
 
   // Sector band drifts horizontally with scroll.
   useGSAP(
     () => {
+      if (!bandNear) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         gsap.fromTo(
@@ -31,7 +34,7 @@ export function About() {
       });
       return () => mm.revert();
     },
-    { scope: band },
+    { dependencies: [bandNear], scope: band },
   );
 
   const [lead, ...rest] = copy.aboutHeading.replace(/\.$/, "").split(" that ");

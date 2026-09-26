@@ -1,5 +1,4 @@
 import { useId, useRef, useState, type FormEvent } from "react";
-import { toast } from "sonner";
 import { Button } from "../../components/ui/Button";
 import { ArrowRight } from "../../components/ui/icons";
 import { copy, emailjsConfig, profile } from "../../content/profile";
@@ -77,11 +76,15 @@ export function ContactForm() {
       if (res.status !== 200) throw new Error(`EmailJS status ${res.status}`);
       setStatus("sent");
       form.current?.reset();
-      toast.success("Message sent successfully!", { description: "I'll get back to you within 24 hours." });
+      import("sonner").then(({ toast }) =>
+        toast.success("Message sent successfully!", { description: "I'll get back to you within 24 hours." }),
+      );
     } catch (err) {
       console.error("Email sending error:", err);
       setStatus("error");
-      toast.error("Failed to send message", { description: "Please try again or contact me directly." });
+      import("sonner").then(({ toast }) =>
+        toast.error("Failed to send message", { description: "Please try again or contact me directly." }),
+      );
     }
   };
 

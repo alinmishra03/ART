@@ -4,6 +4,7 @@ import { ArrowUpRight, GitHub, LinkedIn, Mail, Phone } from "../../components/ui
 import { SectionLabel } from "../../components/ui/SectionLabel";
 import { copy, phone, profile } from "../../content/profile";
 import { gsap, MQ, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 import { ContactForm } from "./ContactForm";
 
 interface Channel {
@@ -44,10 +45,12 @@ const CHANNELS: Channel[] = [
  */
 export function Contact() {
   const section = useRef<HTMLElement>(null);
+  const near = useNearViewport(section);
   const [lead, rest] = copy.contactHeading.split(" Project ");
 
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add({ motion: MQ.motion, mobile: MQ.mobile }, (ctx) => {
         const { motion, mobile } = ctx.conditions as { motion: boolean; mobile: boolean };
@@ -68,7 +71,7 @@ export function Contact() {
       });
       return () => mm.revert();
     },
-    { scope: section },
+    { dependencies: [near], scope: section },
   );
 
   return (
@@ -114,7 +117,7 @@ export function Contact() {
                 <span data-magnetic-inner className="flex flex-col items-center gap-2 text-center">
                   <Mail size={22} />
                   <span className="text-lg font-semibold tracking-tight md:text-xl">Email Me</span>
-                  <span className="t-label opacity-70">{copy.contactEmailNote.replace("Expect a response ", "")}</span>
+                  <span className="t-label opacity-90">{copy.contactEmailNote.replace("Expect a response ", "")}</span>
                 </span>
               </a>
             </Magnetic>

@@ -57,8 +57,8 @@ export function Nav() {
       mm.add(MQ.motion, () => {
         gsap.fromTo(
           "[data-nav-item]",
-          { autoAlpha: 0, yPercent: -60 },
-          { autoAlpha: 1, yPercent: 0, duration: 1, stagger: 0.06, ease: EASE.out, delay: 0.55 },
+          { opacity: 0, yPercent: -60 },
+          { opacity: 1, yPercent: 0, duration: 1, stagger: 0.06, ease: EASE.out, delay: 0.55 },
         );
       });
       return () => mm.revert();
@@ -157,7 +157,8 @@ export function Nav() {
               <a
                 href="/"
                 onClick={(e) => goTo(e, "home")}
-                aria-label={`${profile.name}, back to top`}
+                // Name starts with the visible text (WCAG 2.5.3 label in name).
+                aria-label={`ART. ${profile.name}, back to top`}
                 className="group/roll flex min-h-11 min-w-11 items-center text-lg font-semibold tracking-tight"
               >
                 <RollText>

@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from "react";
 import { gsap, MQ, ScrollTrigger, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 interface MarqueeProps {
   children: ReactNode;
@@ -18,9 +19,11 @@ interface MarqueeProps {
 export function Marquee({ children, direction = 1, speed = 60, className = "" }: MarqueeProps) {
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
+  const near = useNearViewport(root);
 
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         const el = track.current!;
@@ -58,7 +61,7 @@ export function Marquee({ children, direction = 1, speed = 60, className = "" }:
       });
       return () => mm.revert();
     },
-    { scope: root },
+    { dependencies: [near], scope: root },
   );
 
   return (

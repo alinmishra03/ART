@@ -1,5 +1,6 @@
 import { useRef, type ElementType, type ReactNode } from "react";
 import { DUR, EASE, gsap, MQ, REVEAL_START, SplitText, STAGGER, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 type SplitBy = "lines" | "words" | "chars";
 
@@ -50,11 +51,12 @@ export function RevealText({
 }: RevealTextProps) {
   const outer = useRef<HTMLElement>(null);
   const inner = useRef<HTMLSpanElement>(null);
+  const near = useNearViewport(outer, trigger === "scroll");
 
   useGSAP(
     () => {
       const el = inner.current;
-      if (!el || !play) return;
+      if (!el || !play || !near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         const split = SplitText.create(el, {
@@ -81,7 +83,7 @@ export function RevealText({
       });
       return () => mm.revert();
     },
-    { dependencies: [play, by, trigger], scope: outer },
+    { dependencies: [play, near, by, trigger], scope: outer },
   );
 
   return (

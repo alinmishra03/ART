@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from "react";
 import { gsap, MQ, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 interface ParallaxProps {
   children: ReactNode;
@@ -17,9 +18,11 @@ interface ParallaxProps {
 export function Parallax({ children, className, innerClassName, speed = 0.12 }: ParallaxProps) {
   const outer = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
+  const near = useNearViewport(outer);
 
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add({ motion: MQ.motion, mobile: MQ.mobile }, (ctx) => {
         const { motion, mobile } = ctx.conditions as { motion: boolean; mobile: boolean };
@@ -37,7 +40,7 @@ export function Parallax({ children, className, innerClassName, speed = 0.12 }: 
       });
       return () => mm.revert();
     },
-    { dependencies: [speed], scope: outer },
+    { dependencies: [speed, near], scope: outer },
   );
 
   return (

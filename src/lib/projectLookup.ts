@@ -1,7 +1,7 @@
 import { projectCategories, projects } from "../content/projects";
 import type { Project } from "../content/types";
 
-export const projectPath = (p: Pick<Project, "id">) => `/work/${p.id}`;
+export { projectPath } from "./seo";
 
 export const projectById = (id: string) => projects.find((p) => p.id === id);
 

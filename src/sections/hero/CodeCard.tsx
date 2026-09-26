@@ -1,9 +1,7 @@
 import { useRef, type RefObject } from "react";
-import { Draggable } from "gsap/Draggable";
+import type { Draggable as DraggableType } from "gsap/Draggable";
 import { copy, profile } from "../../content/profile";
 import { EASE, gsap, MQ, useGSAP } from "../../lib/motion";
-
-gsap.registerPlugin(Draggable);
 
 const { heroCodeCard } = copy;
 
@@ -79,18 +77,26 @@ export function FloatingCodeCard({ play, bounds }: { play: boolean; bounds: RefO
         };
         window.addEventListener("pointermove", onMove, { passive: true });
 
-        const [draggable] = Draggable.create(drag.current, {
-          type: "x,y",
-          bounds: bounds.current,
-          edgeResistance: 0.8,
-          zIndexBoost: false,
-          onPress: () => gsap.to(tilt.current, { scale: 1.04, duration: 0.3, ease: EASE.soft }),
-          onRelease: () => gsap.to(tilt.current, { scale: 1, duration: 0.8, ease: EASE.settle }),
+        // Draggable is only needed here (xl+, fine pointer), so it loads on demand.
+        let draggable: DraggableType | undefined;
+        let cancelled = false;
+        import("gsap/Draggable").then(({ Draggable }) => {
+          if (cancelled) return;
+          gsap.registerPlugin(Draggable);
+          [draggable] = Draggable.create(drag.current, {
+            type: "x,y",
+            bounds: bounds.current,
+            edgeResistance: 0.8,
+            zIndexBoost: false,
+            onPress: () => gsap.to(tilt.current, { scale: 1.04, duration: 0.3, ease: EASE.soft }),
+            onRelease: () => gsap.to(tilt.current, { scale: 1, duration: 0.8, ease: EASE.settle }),
+          });
         });
 
         return () => {
+          cancelled = true;
           window.removeEventListener("pointermove", onMove);
-          draggable.kill();
+          draggable?.kill();
         };
       });
 

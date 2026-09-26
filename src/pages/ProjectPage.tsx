@@ -7,7 +7,9 @@ import { ProjectShot } from "../components/ui/ProjectShot";
 import type { Project } from "../content/types";
 import { EASE, gsap, MQ, useGSAP } from "../lib/motion";
 import { usePageMeta } from "../lib/meta";
+import { projectMeta } from "../lib/seo";
 import { categoryLabel, nextProject, projectPath } from "../lib/projectLookup";
+import { useNearViewport } from "../lib/useNearViewport";
 import { useRouteScroll } from "../lib/useRouteScroll";
 import { useIntro } from "../providers/Intro";
 import { usePageTransition } from "../providers/PageTransition";
@@ -23,7 +25,7 @@ export function ProjectPage({ project: p }: { project: Project }) {
   const { onLinkClick } = usePageTransition();
   const next = nextProject(p);
 
-  usePageMeta({ title: `${p.title} — Aishwarya Raj Tyagi`, description: p.summary, path: projectPath(p) });
+  usePageMeta(projectMeta(p));
   useRouteScroll(ready);
 
   return (
@@ -53,10 +55,12 @@ export function ProjectPage({ project: p }: { project: Project }) {
 function NextProject({ project: p }: { project: Project }) {
   const { onLinkClick } = usePageTransition();
   const media = useRef<HTMLDivElement>(null);
+  const near = useNearViewport(media);
 
   // The whole frame rises into place; the screenshot inside is never cropped.
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         gsap.fromTo(
@@ -67,7 +71,7 @@ function NextProject({ project: p }: { project: Project }) {
       });
       return () => mm.revert();
     },
-    { scope: media },
+    { dependencies: [near], scope: media },
   );
 
   return (

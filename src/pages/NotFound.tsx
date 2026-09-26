@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { RevealText } from "../components/motion";
 import { Button } from "../components/ui/Button";
 import { ArrowRight } from "../components/ui/icons";
+import { NOT_FOUND_TITLE } from "../lib/seo";
 import { usePageTransition } from "../providers/PageTransition";
 
 export function NotFound() {
@@ -9,8 +10,9 @@ export function NotFound() {
 
   useEffect(() => {
     const previous = document.title;
-    document.title = "Page not found — Aishwarya Raj Tyagi";
-    const robots = document.createElement("meta");
+    document.title = NOT_FOUND_TITLE;
+    // 404.html already ships this tag; reuse it so it is removed when leaving.
+    const robots = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]') ?? document.createElement("meta");
     robots.name = "robots";
     robots.content = "noindex";
     document.head.append(robots);

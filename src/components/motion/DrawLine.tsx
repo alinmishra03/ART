@@ -1,12 +1,15 @@
 import { useRef } from "react";
 import { EASE, gsap, MQ, REVEAL_START, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 
 /** Hairline separator that draws in from the left on entry. */
 export function DrawLine({ className = "", delay = 0, strong = false }: { className?: string; delay?: number; strong?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  const near = useNearViewport(ref);
 
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         gsap.fromTo(
@@ -17,7 +20,7 @@ export function DrawLine({ className = "", delay = 0, strong = false }: { classN
       });
       return () => mm.revert();
     },
-    { scope: ref },
+    { dependencies: [near], scope: ref },
   );
 
   return <div ref={ref} aria-hidden className={`h-px origin-left ${strong ? "bg-line-strong" : "bg-line"} ${className}`} />;

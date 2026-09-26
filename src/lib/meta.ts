@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-
-export const SITE_URL = "https://aishwaryarajtyagi.com";
-export const DEFAULT_TITLE = "Aishwarya Raj Tyagi — Full Stack Developer";
-export const DEFAULT_DESCRIPTION =
-  "Aishwarya Raj Tyagi — Full Stack Developer with 5+ years of experience building scalable, production-ready web applications in React, Next.js, and Node.js.";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, SITE_URL } from "./seo";
 
 function setMeta(selector: string, attr: "content" | "href", value: string) {
   document.head.querySelector(selector)?.setAttribute(attr, value);

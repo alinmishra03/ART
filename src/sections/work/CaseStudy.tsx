@@ -7,6 +7,7 @@ import details from "../../content/projectDetails.json";
 import { projects } from "../../content/projects";
 import type { Project } from "../../content/types";
 import { EASE, gsap, MQ, useGSAP } from "../../lib/motion";
+import { useNearViewport } from "../../lib/useNearViewport";
 import { categoryLabel, pad2, projectPath } from "../../lib/projectLookup";
 import { usePageTransition } from "../../providers/PageTransition";
 
@@ -40,6 +41,7 @@ interface CaseStudyProps {
 export function CaseStudy({ project: p, variant = "showcase", flip = false, priority = false, play = true }: CaseStudyProps) {
   const root = useRef<HTMLElement>(null);
   const { onLinkClick } = usePageTransition();
+  const near = useNearViewport(root, variant === "showcase");
   const number = projects.indexOf(p) + 1;
   const groups = featureGroups(p.id);
   const TitleTag = variant === "page" ? "h1" : "h3";
@@ -49,7 +51,7 @@ export function CaseStudy({ project: p, variant = "showcase", flip = false, prio
 
   useGSAP(
     () => {
-      if (!play) return;
+      if (!play || !near) return;
       const el = root.current!;
       const q = gsap.utils.selector(el);
       const mm = gsap.matchMedia();
@@ -58,18 +60,18 @@ export function CaseStudy({ project: p, variant = "showcase", flip = false, prio
         const start = variant === "page" ? undefined : { trigger: el, start: "top 78%", once: true };
         gsap
           .timeline({ defaults: { ease: EASE.out }, scrollTrigger: start, delay: variant === "page" ? 0.2 : 0 })
-          .fromTo(q("[data-cs='num']"), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.6 })
-          .fromTo(q("[data-cs='cat']"), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.6 }, "-=0.45")
+          .fromTo(q("[data-cs='num']"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 })
+          .fromTo(q("[data-cs='cat']"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, "-=0.45")
           .fromTo(q("[data-cs='rule']"), { scaleX: 0 }, { scaleX: 1, duration: 1.2 }, "-=0.5")
-          .fromTo(q("[data-shot]"), { autoAlpha: 0, y: 56 }, { autoAlpha: 1, y: 0, duration: 1.2 }, "-=1")
+          .fromTo(q("[data-shot]"), { opacity: 0, y: 56 }, { opacity: 1, y: 0, duration: 1.2 }, "-=1")
           .fromTo(q("[data-shot-mask]"), { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: EASE.inOut, clearProps: "clipPath" }, "<0.1")
           .fromTo(q("[data-shot-img]"), { scale: 1.08 }, { scale: 1, duration: 1.7, clearProps: "transform" }, "<");
 
         gsap.fromTo(
           q("[data-cs='text']"),
-          { autoAlpha: 0, y: 28 },
+          { opacity: 0, y: 28 },
           {
-            autoAlpha: 1,
+            opacity: 1,
             y: 0,
             duration: 0.85,
             stagger: 0.09,
@@ -91,7 +93,7 @@ export function CaseStudy({ project: p, variant = "showcase", flip = false, prio
 
       return () => mm.revert();
     },
-    { scope: root, dependencies: [play] },
+    { scope: root, dependencies: [play, near] },
   );
 
   const shot = <ProjectShot project={p} priority={priority} decorative={variant === "showcase"} sizes="(min-width: 120rem) 1840px, (min-width: 64rem) 94vw, 100vw" />;
@@ -118,7 +120,9 @@ export function CaseStudy({ project: p, variant = "showcase", flip = false, prio
             href={projectPath(p)}
             onClick={onLinkClick}
             data-cursor="view"
-            aria-label={`${p.title} case study`}
+            // Pointer shortcut only: "View case study" below is the same link for keyboard and screen readers.
+            aria-hidden
+            tabIndex={-1}
             className="group/shot block rounded-md"
           >
             {shot}

@@ -5,6 +5,7 @@ import { projectCategories, projects } from "../../content/projects";
 import type { ProjectCategoryKey } from "../../content/types";
 import { EASE, gsap, MQ, useGSAP } from "../../lib/motion";
 import { categoryLabel, pad2, projectPath } from "../../lib/projectLookup";
+import { useNearViewport } from "../../lib/useNearViewport";
 import { useFinePointer, useReducedMotion } from "../../lib/useMediaQuery";
 import { usePageTransition } from "../../providers/PageTransition";
 
@@ -18,6 +19,7 @@ export function ProjectIndex() {
   const [filter, setFilter] = useState<ProjectCategoryKey>("all");
   const rows = useMemo(() => (filter === "all" ? projects : projects.filter((p) => p.category === filter)), [filter]);
   const list = useRef<HTMLOListElement>(null);
+  const near = useNearViewport(list);
   const { onLinkClick } = usePageTransition();
   const fine = useFinePointer();
   const reduced = useReducedMotion();
@@ -30,13 +32,14 @@ export function ProjectIndex() {
   // Re-entrance when the filter changes.
   useGSAP(
     () => {
+      if (!near) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
-        gsap.fromTo("[data-index-row]", { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.035, ease: EASE.out });
+        gsap.fromTo("[data-index-row]", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.035, ease: EASE.out });
       });
       return () => mm.revert();
     },
-    { dependencies: [filter], scope: list },
+    { dependencies: [filter, near], scope: list },
   );
 
   // ---- cursor preview
