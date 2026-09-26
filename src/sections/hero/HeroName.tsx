@@ -5,7 +5,7 @@ import { EASE, gsap, MQ, useGSAP } from "../../lib/motion";
 import { featuredProjects } from "../../lib/projectLookup";
 
 /*
- * The oversized full name: "Aishwarya Raj" · project card · "Tyagi" (in the site's blue), filling the row.
+ * The oversized full name: "Aishwarya Raj" · project card · "Tyagi" (in the site's blue italic serif), filling the row.
  * The pointer's horizontal position shares the width between the two words
  * (one stretches, the other narrows; the row's total width never changes)
  * and steps the card through the featured projects. Touch screens get a slow
@@ -122,7 +122,7 @@ export function HeroName({ play }: { play: boolean }) {
       <span data-name-probe className="hero-name-word invisible absolute left-0 top-0" style={{ fontSize: 100 }}>
         {FIRST}
       </span>
-      <span data-name-probe className="hero-name-word invisible absolute left-0 top-0" style={{ fontSize: 100 }}>
+      <span data-name-probe className="hero-name-word hero-name-accent invisible absolute left-0 top-0" style={{ fontSize: 100 }}>
         {LAST}
       </span>
       {m && (

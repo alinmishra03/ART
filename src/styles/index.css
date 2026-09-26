@@ -458,10 +458,10 @@ html.theme-fading *::after {
 @media (min-width: 48rem) {
   .hero-photo-legibility {
     background:
-      linear-gradient(to bottom, rgb(14 14 13 / 0.32) 0%, rgb(14 14 13 / 0) 13%),
-      radial-gradient(ellipse 30% 17% at 89% 18%, rgb(14 14 13 / 0.55) 0%, rgb(14 14 13 / 0.28) 50%, rgb(14 14 13 / 0) 100%),
+      linear-gradient(to bottom, rgb(14 14 13 / 0.5) 0%, rgb(14 14 13 / 0.18) 16%, rgb(14 14 13 / 0) 26%),
+      radial-gradient(ellipse 34% 24% at 88% 60%, rgb(14 14 13 / 0.5) 0%, rgb(14 14 13 / 0.24) 55%, rgb(14 14 13 / 0) 100%),
       radial-gradient(ellipse 75% 28% at 55% 88%, rgb(14 14 13 / 0.45) 0%, rgb(14 14 13 / 0.22) 55%, rgb(14 14 13 / 0) 100%),
-      linear-gradient(to top, rgb(14 14 13 / 0.2) 0%, rgb(14 14 13 / 0) 32%);
+      linear-gradient(to top, rgb(14 14 13 / 0.35) 0%, rgb(14 14 13 / 0) 32%);
   }
 }
 /* Soft frame in the site's ink, so the hero's edges settle into the page like its other ink surfaces. */
@@ -471,8 +471,8 @@ html.theme-fading *::after {
     inset 0 0 18px 3px rgb(14 14 13 / 0.35);
 }
 .hero-photo-grain {
-  /* Close to the site-wide grain level (.grain), not a heavier texture of its own. */
-  opacity: 0.08;
+  /* Kept faint so the photo reads sharp. */
+  opacity: 0.04;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -487,26 +487,107 @@ html.theme-fading *::after {
   }
 }
 
-/* Hero type: two short role statements and the oversized name. */
-/* Availability over the photo: the site's mono status label, larger. */
-.hero-status {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+/* Hero type: availability pill, greeting, statement, the oversized name and the closing row. */
+/* Frosted glass over the photo, for the pill and the work button. */
+.hero-pill,
+.hero-glass {
+  background: rgb(236 235 230 / 0.07);
+  border: 1px solid rgb(236 235 230 / 0.16);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+.hero-glass:hover {
+  background: rgb(236 235 230 / 0.14);
+  border-color: rgb(236 235 230 / 0.4);
+}
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: var(--radius-pill);
+  padding: 0.6rem 1.05rem 0.6rem 0.9rem;
   font-family: var(--font-mono);
-  font-size: clamp(0.95rem, 0.65rem + 0.55vw, 1.25rem);
+  font-size: clamp(0.72rem, 0.62rem + 0.2vw, 0.82rem);
   font-weight: 500;
-  line-height: 1.35;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--fg);
+}
+/* "Hi, I'm": the serif, large and quiet, just above the first name. */
+.hero-greeting {
+  font-size: clamp(2rem, 1rem + 2.6vw, 4rem);
+  line-height: 1;
+  color: var(--fg-muted);
+}
+/* One short statement on the photo's free side. */
+.hero-statement {
+  font-size: clamp(1.35rem, 0.9rem + 1.05vw, 2.15rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  text-wrap: balance;
+}
+/* The role in the closing row, with the years in the muted grey. */
+.hero-role {
+  font-size: clamp(1rem, 0.8rem + 0.45vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.hero-role-muted {
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+/* Scroll cue: a label and a ring whose arrow keeps dropping through it. */
+.hero-cue-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 2.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 500;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--fg);
 }
-.hero-role {
-  font-size: clamp(1.25rem, 0.8rem + 1.1vw, 2rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: var(--fg);
+.hero-cue-arrow {
+  transform: rotate(90deg);
+}
+.hero-cue-ring {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgb(236 235 230 / 0.3);
+  transition: background-color 500ms var(--ease-out), border-color 500ms var(--ease-out), color 500ms var(--ease-out);
+}
+.hero-cue-link:hover .hero-cue-ring {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+@keyframes hero-cue-drop {
+  0% {
+    transform: translateY(-160%) rotate(90deg);
+  }
+  45%,
+  60% {
+    transform: translateY(0) rotate(90deg);
+  }
+  100% {
+    transform: translateY(160%) rotate(90deg);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-cue-arrow {
+    animation: hero-cue-drop 2.4s var(--ease-in-out) infinite;
+  }
 }
 /* Phones show no photograph (the original hero is used there), so the photo layers are off; only the opening wash remains. */
 @media (max-width: 47.99rem) {
@@ -533,9 +614,16 @@ html.theme-fading *::after {
   padding-bottom: 0.22em;
   overflow: hidden;
 }
-/* The last name in the site's blue. */
+/* The last name in the site's blue, in the italic serif used for accents across the site. */
 .hero-name-accent {
   color: #2133eb;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: normal;
+  letter-spacing: -0.02em;
+  /* Room for the italic's overhang inside the mask. */
+  padding-right: 0.08em;
 }
 .hero-name-card {
   border-radius: 0.12em;
@@ -572,18 +660,63 @@ html.theme-fading *::after {
 .footer-copy::before {
   content: "";
   position: absolute;
-  inset: -2rem -100vw -4rem;
+  inset: -4rem -100vw -4rem;
   z-index: -1;
   pointer-events: none;
   /* Full strength through the last line of copy; fades out in the 4rem below it. */
-  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 45%, transparent) 0%, color-mix(in oklab, var(--bg) 45%, transparent) calc(100% - 4rem), color-mix(in oklab, var(--bg) 0%, transparent) 100%);
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 0%, transparent) 0%, color-mix(in oklab, var(--bg) 45%, transparent) 4rem, color-mix(in oklab, var(--bg) 45%, transparent) calc(100% - 4rem), color-mix(in oklab, var(--bg) 0%, transparent) 100%);
 }
 .dark .footer-copy::before {
-  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 74%, transparent) 0%, color-mix(in oklab, var(--bg) 74%, transparent) calc(100% - 4rem), color-mix(in oklab, var(--bg) 0%, transparent) 100%);
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 0%, transparent) 0%, color-mix(in oklab, var(--bg) 74%, transparent) 4rem, color-mix(in oklab, var(--bg) 74%, transparent) calc(100% - 4rem), color-mix(in oklab, var(--bg) 0%, transparent) 100%);
 }
 /* Over the photo the footer's faintest grey is too light for its small labels: they use the muted grey instead. */
 .footer-copy .text-subtle {
   color: var(--fg-muted);
+}
+/*
+ * Footer name: the hero's heavy grotesk, one mask per letter so each can rise
+ * from the baseline; the mask leaves room above for the hover lift.
+ */
+.footer-name-word {
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  color: var(--fg);
+  font-variation-settings: "wght" 720;
+}
+.footer-name-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.14em 0.02em 0.1em;
+  margin: -0.14em -0.02em -0.1em;
+}
+.footer-name-char {
+  transition: transform 600ms var(--ease-out), color 400ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .footer-name-mask:hover .footer-name-char {
+    transform: translateY(-0.1em);
+    color: var(--accent);
+  }
+  .footer-name-accent .footer-name-mask:hover .footer-name-char {
+    color: var(--fg);
+  }
+}
+/* The last name in the site's blue italic serif, as in the hero. */
+.footer-name-accent {
+  color: #2133eb;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: normal;
+  letter-spacing: -0.02em;
+}
+/* The italic leans past each letter's box: wider masks so no stroke is cut. */
+.footer-name-accent .footer-name-mask {
+  padding-inline: 0.12em;
+  margin-inline: -0.12em;
 }
 /* Phones: no footer photograph, so the footer is its plain self again (no photo, veil or label override). */
 @media (max-width: 47.99rem) {
@@ -594,4 +727,85 @@ html.theme-fading *::after {
   .footer-copy .text-subtle {
     color: var(--fg-subtle);
   }
+}
+
+/*
+ * Header: three floating islands (logo, link dock, actions). The dock is
+ * always frosted; the side islands become frosted once the page scrolls, and
+ * the name beside the logo tucks away. Colours come from the tokens, so the
+ * header follows the surface under it (page, photo, inverted).
+ */
+.nav-dock,
+.site-nav .nav-island {
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  transition:
+    background-color 500ms var(--ease-out),
+    border-color 500ms var(--ease-out),
+    box-shadow 500ms var(--ease-out),
+    backdrop-filter 500ms var(--ease-out);
+}
+.nav-dock,
+.site-nav[data-scrolled="true"] .nav-island {
+  background: color-mix(in oklab, var(--bg) 62%, transparent);
+  border-color: var(--line);
+  box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.35);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+}
+.nav-dock {
+  padding: 0.25rem;
+}
+.site-nav[data-scrolled="true"] .nav-island {
+  padding: 0.25rem;
+}
+/* Over the hero photo the glass is the photo palette's ink, a little lighter. */
+.site-nav.surface-photo .nav-dock,
+.site-nav.surface-photo[data-scrolled="true"] .nav-island {
+  background: rgb(236 235 230 / 0.07);
+  border-color: rgb(236 235 230 / 0.16);
+}
+/* While the phone menu is open the islands sit on the menu, without glass. */
+.site-nav[data-menu="open"] .nav-island {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.nav-name {
+  max-width: 16rem;
+  margin-left: 0.75rem;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition:
+    max-width 700ms var(--ease-out),
+    margin 700ms var(--ease-out),
+    opacity 400ms var(--ease-out);
+}
+.site-nav[data-scrolled="true"] .nav-name {
+  max-width: 0;
+  margin-left: 0;
+  opacity: 0;
+}
+.nav-blob {
+  width: 0;
+  will-change: transform, width;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-name {
+    transition: none;
+  }
+}
+/* Phone menu links: large, tight, the current section in the serif. */
+.mobile-menu-link {
+  font-size: clamp(2.75rem, 1.5rem + 7vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.mobile-menu-link.t-serif {
+  font-weight: 400;
+  letter-spacing: -0.02em;
 }

@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from "react";
 import { navItems, type SectionId } from "../../content/nav";
 import { profile } from "../../content/profile";
-import { EASE, gsap, MQ, ScrollTrigger, useGSAP } from "../../lib/motion";
+import { EASE, gsap, MQ, prefersReducedMotion, ScrollTrigger, useGSAP } from "../../lib/motion";
 import { useMediaQuery } from "../../lib/useMediaQuery";
 import { usePathname } from "../../lib/router";
 import { useIntro } from "../../providers/Intro";
@@ -15,15 +15,23 @@ import { ThemeToggle } from "../ui/ThemeToggle";
 import { MobileMenu } from "./MobileMenu";
 
 /**
- * Fixed header. Enters after the preloader, hides while scrolling down and
- * returns on scroll up (never while it holds focus or the menu is open), and
- * tracks the active section with ScrollTrigger (state only changes on toggle).
+ * Fixed header as three floating islands: logo, link dock and actions. They
+ * take on a frosted glass once the page scrolls (the name beside the logo
+ * tucks away). In the dock a solid pill slides under the hovered or focused
+ * link and settles back on the current section, the text under it inverting.
+ *
+ * Enters after the preloader, hides while scrolling down and returns on scroll
+ * up (never while it holds focus or the menu is open), and tracks the active
+ * section with ScrollTrigger (state only changes on toggle).
  */
 export function Nav() {
   const { ready } = useIntro();
   const header = useRef<HTMLElement>(null);
+  const dock = useRef<HTMLUListElement>(null);
+  const blob = useRef<HTMLSpanElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const [active, setActive] = useState<SectionId | null>(null);
+  const [hovered, setHovered] = useState<SectionId | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuOpenRef = useRef(false);
   menuOpenRef.current = menuOpen;
@@ -60,11 +68,53 @@ export function Nav() {
           { opacity: 0, yPercent: -60 },
           { opacity: 1, yPercent: 0, duration: 1, stagger: 0.06, ease: EASE.out, delay: 0.55 },
         );
+        gsap.fromTo("[data-nav-dock]", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.1, ease: EASE.out, delay: 0.5 });
       });
       return () => mm.revert();
     },
     { dependencies: [ready], scope: header },
   );
+
+  // The dock pill: slides (with a little stretch) to the lit link, or shrinks away when none is lit.
+  const lit = hovered ?? active;
+  const firstPlace = useRef(true);
+  const placeBlob = useCallback(() => {
+    const list = dock.current;
+    const pill = blob.current;
+    if (!list || !pill) return;
+    const link = lit ? list.querySelector<HTMLElement>(`[data-dock-link="${lit}"]`) : null;
+    const instant = firstPlace.current || prefersReducedMotion();
+    if (!link) {
+      gsap.to(pill, { scale: 0.6, autoAlpha: 0, duration: instant ? 0 : 0.4, ease: EASE.soft, overwrite: true });
+      return;
+    }
+    // The link sits in its own <li>; the <li> offset is relative to the dock.
+    const props = { x: (link.parentElement?.offsetLeft ?? 0) + link.offsetLeft, width: link.offsetWidth, scale: 1, autoAlpha: 1 };
+    const wasHidden = gsap.getProperty(pill, "autoAlpha") === 0;
+    if (instant) gsap.set(pill, props);
+    else if (wasHidden) {
+      gsap.set(pill, { x: props.x, width: props.width });
+      gsap.fromTo(pill, { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: EASE.out, overwrite: true });
+    } else gsap.to(pill, { ...props, duration: 0.65, ease: "elastic.out(1, 0.8)", overwrite: true });
+    firstPlace.current = false;
+  }, [lit]);
+
+  useLayoutEffect(() => {
+    if (blob.current && firstPlace.current) gsap.set(blob.current, { autoAlpha: 0 });
+    placeBlob();
+  }, [placeBlob]);
+
+  useEffect(() => {
+    const list = dock.current;
+    if (!list) return;
+    // Re-measure when the dock's size changes (fonts, breakpoints).
+    const ro = new ResizeObserver(() => {
+      firstPlace.current = true;
+      placeBlob();
+    });
+    ro.observe(list);
+    return () => ro.disconnect();
+  }, [placeBlob]);
 
   // Scrolled surface + hide-on-scroll-down.
   useGSAP(
@@ -74,7 +124,7 @@ export function Nav() {
       const setHidden = (next: boolean, animate: boolean) => {
         if (next === hidden) return;
         hidden = next;
-        if (animate) gsap.to(el, { yPercent: next ? -100 : 0, duration: next ? 0.45 : 0.7, ease: next ? "power3.in" : EASE.out, overwrite: true });
+        if (animate) gsap.to(el, { yPercent: next ? -110 : 0, duration: next ? 0.45 : 0.7, ease: next ? "power3.in" : EASE.out, overwrite: true });
       };
       const reduce = window.matchMedia(MQ.reduce).matches;
       const st = ScrollTrigger.create({
@@ -115,7 +165,7 @@ export function Nav() {
       });
     });
     return () => triggers.forEach((t) => t?.kill());
-  }, []);
+  }, [pathname]);
 
   // Take on the inverted palette while over an inverted section (Contact, footer),
   // and the photo palette while over the hero portrait.
@@ -159,51 +209,51 @@ export function Nav() {
 
   return (
     <>
-      <header
-        ref={header}
-        data-scrolled="false"
-        className="fixed inset-x-0 top-0 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-500 data-[scrolled=true]:border-line data-[scrolled=true]:bg-bg/80 data-[scrolled=true]:backdrop-blur-md"
-        style={{ zIndex: "var(--z-nav)" }}
-      >
-        <div className="container-x flex h-nav items-center justify-between gap-6">
-          <div data-nav-item data-fade="">
+      <header ref={header} data-scrolled="false" data-menu={menuOpen ? "open" : "closed"} className="site-nav fixed inset-x-0 top-0" style={{ zIndex: "var(--z-nav)" }}>
+        <div className="container-x flex h-nav items-center justify-between gap-4">
+          {/* Logo island: the name beside it tucks away once the page scrolls. */}
+          <div data-nav-item data-fade="" className="nav-island">
             <Magnetic strength={0.2}>
               <a
                 href="/"
                 onClick={(e) => goTo(e, "home")}
                 // Name starts with the visible text (WCAG 2.5.3 label in name).
                 aria-label={`ART. ${profile.name}, back to top`}
-                className="group/roll flex min-h-11 min-w-11 items-center text-lg font-semibold tracking-tight"
+                className="group/roll flex min-h-11 min-w-11 items-center px-3 text-lg font-semibold tracking-tight"
               >
                 <RollText>
-                  <span className="flex items-baseline gap-3">
+                  <span className="flex items-baseline">
                     <span>
                       ART<span className="t-serif text-accent">.</span>
                     </span>
-                    <span className="t-label hidden font-normal text-muted lg:inline">{profile.name}</span>
+                    <span className="nav-name t-label hidden font-normal text-muted lg:inline-block">{profile.name}</span>
                   </span>
                 </RollText>
               </a>
             </Magnetic>
           </div>
 
-          <nav aria-label="Primary" className="hidden md:block">
-            <ul className="flex items-center gap-1 lg:gap-3">
+          {/* Link dock. */}
+          <nav aria-label="Primary" data-nav-dock className="nav-dock hidden md:block">
+            <ul ref={dock} onPointerLeave={() => setHovered(null)} className="relative flex items-center">
+              <li aria-hidden className="pointer-events-none absolute inset-y-0 left-0">
+                <span ref={blob} className="nav-blob block h-full rounded-full bg-fg" />
+              </li>
               {navItems.map(({ id, label }, i) => {
-                const isActive = active === id;
+                const isLit = lit === id;
                 return (
-                  <li key={id} data-nav-item data-fade="">
+                  <li key={id} data-nav-item data-fade="" className="relative">
                     <a
+                      data-dock-link={id}
                       href={`/#${id}`}
                       onClick={(e) => goTo(e, id)}
-                      aria-current={isActive ? "location" : undefined}
-                      className={`group/roll t-label flex min-h-11 items-center gap-2 px-3 transition-colors duration-300 ${isActive ? "text-fg" : "text-muted hover:text-fg"}`}
+                      onPointerEnter={() => setHovered(id)}
+                      onFocus={() => setHovered(id)}
+                      onBlur={() => setHovered(null)}
+                      aria-current={active === id ? "location" : undefined}
+                      className={`group/roll t-label flex min-h-10 items-center gap-1.5 rounded-full px-4 transition-colors duration-500 lg:px-5 ${isLit ? "text-bg" : "text-muted"}`}
                     >
-                      <span
-                        aria-hidden
-                        className={`size-1.5 rounded-full bg-accent transition-transform duration-500 ease-out ${isActive ? "scale-100" : "scale-0"}`}
-                      />
-                      <span aria-hidden className="text-subtle">
+                      <span aria-hidden className="hidden text-[0.85em] opacity-55 lg:inline">
                         0{i + 1}
                       </span>
                       <RollText>{label}</RollText>
@@ -214,7 +264,8 @@ export function Nav() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-1 sm:gap-3">
+          {/* Actions island. */}
+          <div className="nav-island flex items-center gap-1 sm:gap-2">
             <div data-nav-item data-fade="">
               <ThemeToggle />
             </div>
@@ -230,7 +281,7 @@ export function Nav() {
                 onClick={() => setMenuOpen((o) => !o)}
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
-                className="group/menu flex min-h-11 items-center gap-3 pl-2"
+                className="group/menu flex min-h-11 items-center gap-3 rounded-full bg-fg pl-4 pr-3.5 text-bg"
               >
                 <span className="t-label relative block h-[1.3em] overflow-hidden">
                   <span className={`block transition-transform duration-500 ease-out motion-reduce:transition-none ${menuOpen ? "-translate-y-1/2" : ""}`}>
@@ -238,12 +289,12 @@ export function Nav() {
                     <span className="block">Close</span>
                   </span>
                 </span>
-                <span aria-hidden className="relative block h-3 w-6">
+                <span aria-hidden className="relative block size-4">
                   <span
-                    className={`absolute left-0 h-px w-full bg-fg transition-transform duration-500 ease-out motion-reduce:transition-none top-0.5 ${menuOpen ? "translate-y-[3.5px] rotate-45" : ""}`}
+                    className={`absolute left-0 top-[4.5px] h-[1.5px] w-full origin-center rounded bg-current transition-transform duration-500 ease-out motion-reduce:transition-none ${menuOpen ? "translate-y-[2.75px] rotate-45" : ""}`}
                   />
                   <span
-                    className={`absolute left-0 h-px w-full bg-fg transition-transform duration-500 ease-out motion-reduce:transition-none bottom-0.5 ${menuOpen ? "-translate-y-[3.5px] -rotate-45" : ""}`}
+                    className={`absolute bottom-[4.5px] right-0 h-[1.5px] rounded bg-current transition-all duration-500 ease-out motion-reduce:transition-none ${menuOpen ? "w-full -translate-y-[2.75px] -rotate-45" : "w-2/3"}`}
                   />
                 </span>
               </button>

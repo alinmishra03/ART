@@ -12,7 +12,7 @@ import { EASE, gsap, MQ, useGSAP } from "../../lib/motion";
  */
 
 const SOURCE = { width: 1376, height: 768 };
-const WIDTHS = [640, 1024, 1376];
+const WIDTHS = [640, 1024, 1376, 1920, 2752];
 /** Head and face in the photo, as fractions (measured: x 150–395, y 50–310 of 1376×768, plus margin). */
 const FACE = { bottom: 0.41, centerX: 0.2 };
 /** A little over cover, so the cursor follow never shows an edge. */
@@ -122,7 +122,7 @@ export function Portrait({ play }: { play: boolean }) {
                 <source type="image/webp" srcSet={srcSet("webp")} sizes={`${box.width}px`} />
                 <img
                   ref={img}
-                  src="/img/portrait/hero-1024.webp"
+                  src="/img/portrait/hero-1920.webp"
                   alt={`Portrait of ${profile.name}`}
                   width={SOURCE.width}
                   height={SOURCE.height}
