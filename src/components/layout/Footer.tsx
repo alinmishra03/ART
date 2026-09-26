@@ -15,6 +15,8 @@ import { RollText } from "../ui/RollText";
  * page ends (scrubbed), finishing on the ART. wordmark. Only original details:
  * bio, availability, navigation, socials, title and copyright.
  */
+const PHOTO_SET = (ext: string) => [640, 1024, 1376].map((w) => `/img/portrait/hero-${w}.${ext} ${w}w`).join(", ");
+
 export function Footer() {
   const root = useRef<HTMLElement>(null);
   const near = useNearViewport(root);
@@ -58,7 +60,16 @@ export function Footer() {
 
   return (
     <footer ref={root} data-hide-dock className="surface-invert relative overflow-hidden border-t border-line bg-bg">
-      <div data-footer-inner className="container-x pt-20 md:pt-28">
+      {/* The hero photograph across the whole footer, in black and white (the image file is untouched). */}
+      <div aria-hidden className="footer-photo pointer-events-none absolute inset-0 overflow-hidden">
+        <picture>
+          <source type="image/avif" srcSet={PHOTO_SET("avif")} sizes="100vw" />
+          <img src="/img/portrait/hero-1376.webp" alt="" width={1376} height={768} loading="lazy" decoding="async" />
+        </picture>
+        <div className="footer-photo-wash absolute inset-0" />
+      </div>
+
+      <div data-footer-inner className="footer-copy container-x relative isolate pt-20 md:pt-28">
         <div className="grid-12 gap-y-12">
           <div className="col-span-4 md:col-span-8 lg:col-span-5">
             <p className="t-lead max-w-md text-muted">{profile.shortBio}</p>
@@ -127,7 +138,7 @@ export function Footer() {
       <p
         data-footer-mark
         aria-hidden
-        className="pointer-events-none -mb-[0.06em] select-none text-center text-[clamp(8rem,30vw,30rem)] font-bold leading-[0.85] tracking-[-0.07em] text-fg"
+        className="pointer-events-none relative -mb-[0.06em] select-none text-center text-[clamp(8rem,30vw,30rem)] font-bold leading-[0.85] tracking-[-0.07em] text-fg"
       >
         ART<span className="t-serif text-accent">.</span>
       </p>

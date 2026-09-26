@@ -422,7 +422,8 @@ html.theme-fading *::after {
  * The file itself is untouched.
  */
 .hero-photo {
-  filter: grayscale(1) contrast(1.08) brightness(0.86);
+  /* Black and white, with the faint warmth of the site's ink and paper. */
+  filter: grayscale(1) sepia(0.06) contrast(1.08) brightness(0.86);
 }
 /* Ink shade: under the nav, and along the bottom for the name. */
 .hero-photo-shade {
@@ -448,14 +449,15 @@ html.theme-fading *::after {
       linear-gradient(to top, rgb(14 14 13 / 0.2) 0%, rgb(14 14 13 / 0) 32%);
   }
 }
-/* Soft glowing frame in the paper tone. */
+/* Soft frame in the site's ink, so the hero's edges settle into the page like its other ink surfaces. */
 .hero-photo-edge {
   box-shadow:
-    inset 0 0 90px 26px rgb(236 235 230 / 0.26),
-    inset 0 0 18px 3px rgb(236 235 230 / 0.22);
+    inset 0 0 90px 26px rgb(14 14 13 / 0.45),
+    inset 0 0 18px 3px rgb(14 14 13 / 0.35);
 }
 .hero-photo-grain {
-  opacity: 0.18;
+  /* Close to the site-wide grain level (.grain), not a heavier texture of its own. */
+  opacity: 0.08;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -502,4 +504,49 @@ html.theme-fading *::after {
 }
 .hero-name-card {
   border-radius: 0.12em;
+}
+
+/*
+ * Footer photo: the hero photograph across the whole footer, black and white
+ * like the hero. The footer is an inverted surface, so the wash follows it:
+ * on the ink footer (light theme) the photo is shaded towards ink under the
+ * paper text; on the paper footer (dark theme) it is washed towards paper,
+ * a light print under the ink text.
+ */
+.footer-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 22% 30%;
+  filter: grayscale(1) sepia(0.06) contrast(1.08) brightness(0.86);
+}
+.footer-photo-wash {
+  background: color-mix(in oklab, var(--bg) 38%, transparent);
+}
+.dark .footer-photo-wash {
+  background: color-mix(in oklab, var(--bg) 64%, transparent);
+}
+/*
+ * Behind the footer copy the photo recedes a little further under a soft veil
+ * of the footer's ground (fading out below the copy), so the copy stays
+ * readable; the photo shows fully around the ART. mark.
+ */
+.footer-copy::before {
+  content: "";
+  position: absolute;
+  inset: -2rem -100vw -4rem;
+  z-index: -1;
+  pointer-events: none;
+  /* Full strength through the last line of copy; fades out in the 4rem below it. */
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 45%, transparent) 0%, color-mix(in oklab, var(--bg) 45%, transparent) calc(100% - 4rem), color-mix(in oklab, var(--bg) 0%, transparent) 100%);
+}
+.dark .footer-copy::before {
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--bg) 74%, transparent) 0%, color-mix(in oklab, var(--bg) 74%, transparent) calc(100% - 4rem), color-mix(in oklab, var(--bg) 0%, transparent) 100%);
+}
+/* Over the photo the footer's faintest grey is too light for its small labels: they use the muted grey instead. */
+.footer-copy .text-subtle {
+  color: var(--fg-muted);
 }
