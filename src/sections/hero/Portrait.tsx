@@ -18,6 +18,7 @@ const FACE = { bottom: 0.41, centerX: 0.2 };
 /** A little over cover, so the cursor follow never shows an edge. */
 const OVERSCAN = 1.03;
 
+const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 const srcSet = (ext: string) => WIDTHS.map((w) => `/img/portrait/hero-${w}.${ext} ${w}w`).join(", ");
 
 interface Box {
@@ -115,6 +116,8 @@ export function Portrait({ play }: { play: boolean }) {
           <div data-photo-zoom className="absolute inset-0 origin-[34%_30%]">
             {box && (
               <picture>
+                {/* Phones: no photograph (the hero is type only there), so nothing is downloaded. */}
+                <source media="(max-width: 47.99rem)" srcSet={BLANK} />
                 <source type="image/avif" srcSet={srcSet("avif")} sizes={`${box.width}px`} />
                 <source type="image/webp" srcSet={srcSet("webp")} sizes={`${box.width}px`} />
                 <img

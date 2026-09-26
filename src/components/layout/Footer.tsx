@@ -15,6 +15,7 @@ import { RollText } from "../ui/RollText";
  * page ends (scrubbed), finishing on the ART. wordmark. Only original details:
  * bio, availability, navigation, socials, title and copyright.
  */
+const BLANK = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 const PHOTO_SET = (ext: string) => [640, 1024, 1376].map((w) => `/img/portrait/hero-${w}.${ext} ${w}w`).join(", ");
 
 export function Footer() {
@@ -63,6 +64,8 @@ export function Footer() {
       {/* The hero photograph across the whole footer, in black and white (the image file is untouched). */}
       <div aria-hidden className="footer-photo pointer-events-none absolute inset-0 overflow-hidden">
         <picture>
+          {/* Phones: no photograph in the footer, so nothing is downloaded. */}
+          <source media="(max-width: 47.99rem)" srcSet={BLANK} />
           <source type="image/avif" srcSet={PHOTO_SET("avif")} sizes="100vw" />
           <img src="/img/portrait/hero-1376.webp" alt="" width={1376} height={768} loading="lazy" decoding="async" />
         </picture>

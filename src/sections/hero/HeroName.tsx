@@ -5,16 +5,17 @@ import { EASE, gsap, MQ, useGSAP } from "../../lib/motion";
 import { featuredProjects } from "../../lib/projectLookup";
 
 /*
- * The oversized full name: first name · project card · "Raj Tyagi", filling the row.
+ * The oversized full name: "Aishwarya Raj" · project card · "Tyagi" (in the site's blue), filling the row.
  * The pointer's horizontal position shares the width between the two words
  * (one stretches, the other narrows; the row's total width never changes)
  * and steps the card through the featured projects. Touch screens get a slow
  * automatic sway instead; reduced motion keeps it still.
  */
 
-// Full name in two parts that trade width: "Aishwarya" | "Raj Tyagi".
-const [FIRST, ...rest] = profile.name.split(" ");
-const LAST = rest.join(" ");
+// Full name in two parts that trade width: "Aishwarya Raj" | "Tyagi".
+const nameParts = profile.name.split(" ");
+const FIRST = nameParts.slice(0, -1).join(" ");
+const LAST = nameParts[nameParts.length - 1];
 /** Card width and word gap, as multiples of the font size. */
 const CARD = 1.34;
 const GAP = 0.1;
@@ -143,7 +144,7 @@ export function HeroName({ play }: { play: boolean }) {
             ))}
           </div>
           <span data-name-last className="hero-name-mask absolute right-0 block origin-right">
-            <span data-name-rise className="hero-name-word block">
+            <span data-name-rise className="hero-name-word hero-name-accent block">
               {LAST}
             </span>
           </span>

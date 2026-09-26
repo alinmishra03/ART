@@ -427,7 +427,22 @@ html.theme-fading *::after {
 }
 /* Ink shade: under the nav, and along the bottom for the name. */
 .hero-photo-shade {
-  background: linear-gradient(to bottom, rgb(14 14 13 / 0.5) 0%, rgb(14 14 13 / 0) 18%, rgb(14 14 13 / 0) 52%, rgb(14 14 13 / 0.45) 80%, rgb(14 14 13 / 0.7) 100%);
+  background: linear-gradient(to bottom, rgb(14 14 13 / 0.5) 0%, rgb(14 14 13 / 0) 18%, rgb(14 14 13 / 0) 52%, rgb(14 14 13 / 0.45) 80%, rgb(14 14 13 / 0.7) 96%, rgb(14 14 13) 100%);
+}
+/*
+ * No hard seam under the hero (768px up, light theme): the hero ends in solid
+ * ink and the top padding of the next section (About) fades that ink into the
+ * page's paper before any of its content. The dark theme is ink on ink already.
+ */
+@media (min-width: 48rem) {
+  html:not(.dark) #about::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--section-y);
+    pointer-events: none;
+    background: linear-gradient(to bottom, #0e0e0d 0%, color-mix(in oklab, #0e0e0d 55%, var(--bg)) 30%, color-mix(in oklab, #0e0e0d 12%, var(--bg)) 70%, var(--bg) 100%);
+  }
 }
 /*
  * Readability: soft ink pools under the text only, fading to nothing
@@ -438,7 +453,7 @@ html.theme-fading *::after {
 .hero-photo-legibility {
   background:
     linear-gradient(to bottom, rgb(14 14 13 / 0.32) 0%, rgb(14 14 13 / 0) 13%),
-    radial-gradient(ellipse 95% 16% at 50% 61%, rgb(14 14 13 / 0.55) 0%, rgb(14 14 13 / 0.3) 55%, rgb(14 14 13 / 0) 100%);
+    linear-gradient(to top, rgb(14 14 13 / 0.6) 0%, rgb(14 14 13 / 0.38) 18%, rgb(14 14 13 / 0) 38%);
 }
 @media (min-width: 48rem) {
   .hero-photo-legibility {
@@ -473,6 +488,19 @@ html.theme-fading *::after {
 }
 
 /* Hero type: two short role statements and the oversized name. */
+/* Availability over the photo: the site's mono status label, larger. */
+.hero-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.95rem, 0.65rem + 0.55vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg);
+}
 .hero-role {
   font-size: clamp(1.25rem, 0.8rem + 1.1vw, 2rem);
   font-weight: 600;
@@ -480,12 +508,15 @@ html.theme-fading *::after {
   letter-spacing: -0.02em;
   color: var(--fg);
 }
-.hero-role-sm {
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  color: var(--fg);
+/* Phones show no photograph (the original hero is used there), so the photo layers are off; only the opening wash remains. */
+@media (max-width: 47.99rem) {
+  .hero-photo,
+  .hero-photo-shade,
+  .hero-photo-legibility,
+  .hero-photo-edge,
+  .hero-photo-grain {
+    display: none;
+  }
 }
 .hero-name-word {
   font-size: 1em;
@@ -501,6 +532,10 @@ html.theme-fading *::after {
   bottom: -0.22em;
   padding-bottom: 0.22em;
   overflow: hidden;
+}
+/* The last name in the site's blue. */
+.hero-name-accent {
+  color: #2133eb;
 }
 .hero-name-card {
   border-radius: 0.12em;
@@ -549,4 +584,14 @@ html.theme-fading *::after {
 /* Over the photo the footer's faintest grey is too light for its small labels: they use the muted grey instead. */
 .footer-copy .text-subtle {
   color: var(--fg-muted);
+}
+/* Phones: no footer photograph, so the footer is its plain self again (no photo, veil or label override). */
+@media (max-width: 47.99rem) {
+  .footer-photo,
+  .footer-copy::before {
+    display: none;
+  }
+  .footer-copy .text-subtle {
+    color: var(--fg-subtle);
+  }
 }

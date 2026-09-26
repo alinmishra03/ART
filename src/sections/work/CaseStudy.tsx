@@ -189,7 +189,7 @@ export function CaseStudy({ project: p, variant = "showcase", flip = false, prio
               </a>
             )}
           </div>
-          <p data-cs="text" data-fade="" className="t-label mt-4 text-subtle">
+          <p data-cs="text" data-fade="" className="t-label mt-4 text-subtle [overflow-wrap:anywhere]">
             {hostOf(p.liveUrl)}
           </p>
         </div>

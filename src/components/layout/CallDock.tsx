@@ -169,9 +169,10 @@ export function CallDock() {
         </div>
       ) : (
         <>
-          <a href={`tel:${phone.tel}`} className={pill} aria-label={`Call ${phone.tel}`}>
+          {/* Phones: a compact round button (the label stays for screen readers), so it covers less of the page. */}
+          <a href={`tel:${phone.tel}`} className={`${pill} max-sm:gap-0 max-sm:pr-2`} aria-label={`Call ${phone.tel}`}>
             {badge}
-            <span className="t-label">Call</span>
+            <span className="t-label max-sm:sr-only">Call</span>
           </a>
           <button
             type="button"
