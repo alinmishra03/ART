@@ -415,3 +415,91 @@ html.theme-fading *::after {
     transform: translateX(100%);
   }
 }
+
+/*
+ * Hero photograph (see Portrait.tsx). Presentation only, on screen: black and
+ * white (no tint), shading for the type, a soft glowing paper frame and grain.
+ * The file itself is untouched.
+ */
+.hero-photo {
+  filter: grayscale(1) contrast(1.08) brightness(0.86);
+}
+/* Ink shade: under the nav, and along the bottom for the name. */
+.hero-photo-shade {
+  background: linear-gradient(to bottom, rgb(14 14 13 / 0.5) 0%, rgb(14 14 13 / 0) 18%, rgb(14 14 13 / 0) 52%, rgb(14 14 13 / 0.45) 80%, rgb(14 14 13 / 0.7) 100%);
+}
+/*
+ * Readability: soft ink pools under the text only, fading to nothing
+ * elsewhere (no box, no blur; the photo itself is untouched). Phones: behind
+ * the name and role at chest height; wider: behind the top-right role, the
+ * name and title along the bottom, and a light band under the nav.
+ */
+.hero-photo-legibility {
+  background:
+    linear-gradient(to bottom, rgb(14 14 13 / 0.32) 0%, rgb(14 14 13 / 0) 13%),
+    radial-gradient(ellipse 95% 16% at 50% 61%, rgb(14 14 13 / 0.55) 0%, rgb(14 14 13 / 0.3) 55%, rgb(14 14 13 / 0) 100%);
+}
+@media (min-width: 48rem) {
+  .hero-photo-legibility {
+    background:
+      linear-gradient(to bottom, rgb(14 14 13 / 0.32) 0%, rgb(14 14 13 / 0) 13%),
+      radial-gradient(ellipse 30% 17% at 89% 18%, rgb(14 14 13 / 0.55) 0%, rgb(14 14 13 / 0.28) 50%, rgb(14 14 13 / 0) 100%),
+      radial-gradient(ellipse 75% 28% at 55% 88%, rgb(14 14 13 / 0.45) 0%, rgb(14 14 13 / 0.22) 55%, rgb(14 14 13 / 0) 100%),
+      linear-gradient(to top, rgb(14 14 13 / 0.2) 0%, rgb(14 14 13 / 0) 32%);
+  }
+}
+/* Soft glowing frame in the paper tone. */
+.hero-photo-edge {
+  box-shadow:
+    inset 0 0 90px 26px rgb(236 235 230 / 0.26),
+    inset 0 0 18px 3px rgb(236 235 230 / 0.22);
+}
+.hero-photo-grain {
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* Opening wash: the photo rises out of the ground colour (motion only). */
+.hero-photo-curtain {
+  background: var(--bg);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero-photo-curtain {
+    opacity: 1;
+  }
+}
+
+/* Hero type: two short role statements and the oversized name. */
+.hero-role {
+  font-size: clamp(1.25rem, 0.8rem + 1.1vw, 2rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.hero-role-sm {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.hero-name-word {
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  color: var(--fg);
+  font-variation-settings: "wght" 720;
+}
+/* Reveal mask for each word, with room below for descenders (g, y). */
+.hero-name-mask {
+  bottom: -0.22em;
+  padding-bottom: 0.22em;
+  overflow: hidden;
+}
+.hero-name-card {
+  border-radius: 0.12em;
+}

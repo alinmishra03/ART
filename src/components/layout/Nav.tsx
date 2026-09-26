@@ -117,10 +117,24 @@ export function Nav() {
     return () => triggers.forEach((t) => t?.kill());
   }, []);
 
-  // Take on the inverted palette while over an inverted section (Contact, footer).
+  // Take on the inverted palette while over an inverted section (Contact, footer),
+  // and the photo palette while over the hero portrait.
   useEffect(() => {
     const el = header.current!;
     const active = new Set<Element>();
+    const photo = new Set<Element>();
+    const photoTriggers = [...document.querySelectorAll("main .surface-photo")].map((section) =>
+      ScrollTrigger.create({
+        trigger: section,
+        start: () => `top top+=${el.offsetHeight / 2}`,
+        end: () => `bottom top+=${el.offsetHeight / 2}`,
+        onToggle: (self) => {
+          if (self.isActive) photo.add(section);
+          else photo.delete(section);
+          el.classList.toggle("surface-photo", photo.size > 0);
+        },
+      }),
+    );
     const triggers = [...document.querySelectorAll("main .surface-invert, footer.surface-invert")].map((section) =>
       ScrollTrigger.create({
         trigger: section,
@@ -134,8 +148,8 @@ export function Nav() {
       }),
     );
     return () => {
-      triggers.forEach((t) => t.kill());
-      el.classList.remove("surface-invert");
+      [...triggers, ...photoTriggers].forEach((t) => t.kill());
+      el.classList.remove("surface-invert", "surface-photo");
     };
   }, [pathname]);
 

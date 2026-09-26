@@ -145,3 +145,27 @@
   --danger: #b42318;
   color-scheme: light;
 }
+
+/*
+ * Photo surface (the hero over the photograph), the same in both themes:
+ * black and white only, the site's ink and paper (no cobalt accent over the
+ * photo). Components inside pick it up through the tokens; the nav and cursor
+ * switch to it over the hero.
+ */
+.surface-photo {
+  --bg: #0e0e0d;
+  --bg-raised: #171715;
+  --bg-sunken: #0a0a09;
+  --fg: #ecebe6;
+  --fg-muted: #c9c7bf;
+  --fg-subtle: #a3a097;
+  --line: rgb(236 235 230 / 0.16);
+  --line-strong: rgb(236 235 230 / 0.36);
+  --accent: #ecebe6;
+  --accent-fg: #0e0e0d;
+  --accent-soft: rgb(236 235 230 / 0.12);
+  --inverse-bg: #ecebe6;
+  --inverse-fg: #0e0e0d;
+  color-scheme: dark;
+  color: var(--fg);
+}

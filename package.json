@@ -11,7 +11,8 @@
     "images": "node scripts/optimize-images.mjs",
     "content": "node scripts/build-content.mjs",
     "verify:content": "node scripts/verify-content.mjs",
-    "og": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/og-images.mjs"
+    "og": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/og-images.mjs",
+    "portrait": "node scripts/portrait.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

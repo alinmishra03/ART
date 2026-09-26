@@ -56,12 +56,19 @@ export function Cursor() {
     };
 
     let inverted = false;
+    let photo = false;
     const onOver = (e: PointerEvent) => {
-      // Over an inverted surface the cursor takes that surface's tokens.
-      const inv = !!(e.target as Element | null)?.closest(".surface-invert");
+      // Over an inverted (or photo) surface the cursor takes that surface's tokens.
+      const surface = (e.target as Element | null)?.closest(".surface-invert, .surface-photo");
+      const inv = !!surface?.classList.contains("surface-invert");
+      const pho = !!surface?.classList.contains("surface-photo");
       if (inv !== inverted) {
         inverted = inv;
         r.classList.toggle("surface-invert", inv);
+      }
+      if (pho !== photo) {
+        photo = pho;
+        r.classList.toggle("surface-photo", pho);
       }
       const target = (e.target as Element | null)?.closest<HTMLElement>(INTERACTIVE);
       if (!target) return setState("default");

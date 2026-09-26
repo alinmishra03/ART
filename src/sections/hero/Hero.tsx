@@ -1,119 +1,91 @@
 import { useRef } from "react";
-import { FadeIn, RevealText } from "../../components/motion";
-import { Button } from "../../components/ui/Button";
-import { ArrowRight, Mail } from "../../components/ui/icons";
+import { RevealText } from "../../components/motion";
 import { copy, profile } from "../../content/profile";
 import { gsap, MQ, useGSAP } from "../../lib/motion";
 import { useIntro } from "../../providers/Intro";
-import { useScrollTo } from "../../providers/SmoothScroll";
-import { FloatingCodeCard, InlineCodeCard } from "./CodeCard";
+import { HeroName } from "./HeroName";
+import { Portrait } from "./Portrait";
+
+// "Available for Hire & Freelance" → two lines, as set in the composition.
+const [availLead, availTail] = copy.heroBadge.split(" & ");
+const [firstName, ...otherNames] = profile.name.split(" ");
 
 /**
- * Opening viewport: status → oversized name → bio + CTAs. Entrance plays when
- * the preloader lifts; on scroll the two name lines drift apart and the lower
- * row recedes, handing over to the About section.
+ * Opening screen: the full-bleed photograph with the role in two short
+ * statements and the oversized name along the bottom (first · project card ·
+ * last, reacting to the pointer). On the photo surface palette.
+ *
+ * Sequence after the preloader: the photo rises out of the ground colour, the
+ * role lines slide up, then the name and its card. On scroll the photo lags
+ * the page. Phones: no oversized name; the name sits small at chest height
+ * with the two role statements facing each other below it.
  */
 export function Hero() {
   const { ready } = useIntro();
   const section = useRef<HTMLElement>(null);
-  const scrollTo = useScrollTo();
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add({ motion: MQ.motion, mobile: MQ.mobile }, (ctx) => {
-        const { motion, mobile } = ctx.conditions as { motion: boolean; mobile: boolean };
-        if (!motion) return;
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
+      mm.add(MQ.motion, () => {
+        gsap.to("[data-photo-scroll]", {
+          yPercent: 12,
+          ease: "none",
           scrollTrigger: { trigger: section.current, start: "top top", end: "bottom top", scrub: true },
         });
-        tl.to("[data-hero-line='1']", { xPercent: mobile ? -4 : -9 }, 0)
-          .to("[data-hero-line='2']", { xPercent: mobile ? 4 : 7 }, 0)
-          .to("[data-hero-bottom]", { y: -60, opacity: 0, duration: 0.45 }, 0);
       });
       return () => mm.revert();
     },
     { scope: section },
   );
 
+  const role = (
+    <RevealText as="span" by="lines" trigger="mount" play={ready} delay={0.45} className="block">
+      {availLead}
+      <br />
+      &amp; {availTail}
+    </RevealText>
+  );
+  const title = (
+    <RevealText as="span" by="lines" trigger="mount" play={ready} delay={0.55} className="block">
+      {profile.title}
+    </RevealText>
+  );
+
   return (
-    <section ref={section} id="home" aria-label="Introduction" className="relative flex min-h-svh flex-col overflow-hidden pt-nav">
-      <div className="container-x relative flex flex-1 flex-col gap-12 pb-6 pt-6 md:pb-10 md:pt-10">
-        {/* Status row */}
-        <div className="flex items-start justify-between gap-6">
-          <FadeIn trigger="mount" play={ready} delay={0.6} y={12}>
-            <p className="t-label flex items-center gap-2.5 text-muted">
-              <span aria-hidden className="relative flex size-2">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
-                <span className="relative inline-flex size-2 rounded-full bg-accent" />
-              </span>
-              {copy.heroBadge}
-            </p>
-          </FadeIn>
-          <FadeIn trigger="mount" play={ready} delay={0.7} y={12} className="hidden text-right sm:block">
-            <p className="t-label text-muted">{profile.title}</p>
-            <p className="t-label mt-1 text-subtle">React · Next.js · Node.js</p>
-          </FadeIn>
-        </div>
+    <section ref={section} id="home" aria-label="Introduction" className="surface-photo relative min-h-svh overflow-hidden bg-bg">
+      <Portrait play={ready} />
 
-        <InlineCodeCard play={ready} />
+      <h1 className="sr-only">
+        {profile.name}, {profile.title}
+      </h1>
 
-        {/* Name (layered above the floating card) */}
-        <h1 className="t-mega pointer-events-none relative z-10 mt-auto uppercase">
-          <span data-hero-line="1" className="block will-change-transform">
-            <RevealText as="span" className="block" by="chars" trigger="mount" play={ready} stagger={0.035}>
-              {profile.name.split(" ")[0]}
-            </RevealText>
-          </span>
-          <span data-hero-line="2" className="flex items-baseline gap-[0.22em] will-change-transform lg:pl-[8%]">
-            <RevealText as="span" by="chars" trigger="mount" play={ready} delay={0.12} stagger={0.035}>
-              {profile.name.split(" ")[1]}
-            </RevealText>
-            <RevealText as="span" by="chars" trigger="mount" play={ready} delay={0.22} stagger={0.035} className="t-serif text-[1.08em] normal-case text-accent">
-              {profile.name.split(" ")[2]}
-            </RevealText>
-          </span>
-        </h1>
-
-        {/* Bio, CTAs, scroll cue */}
-        <div data-hero-bottom className="grid-12 items-end gap-y-8">
-          <FadeIn trigger="mount" play={ready} delay={0.75} className="col-span-4 md:col-span-8 lg:col-span-5">
-            <p className="t-lead max-w-[34ch] text-muted">{profile.shortBio}</p>
-          </FadeIn>
-          <FadeIn trigger="mount" play={ready} delay={0.85} className="col-span-4 md:col-span-8 lg:col-span-5 lg:col-start-7 xl:col-span-4">
-            <div className="flex flex-wrap gap-3">
-              <Button
-                href="#projects"
-                icon={ArrowRight}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollTo("#projects");
-                }}
-              >
-                View Projects
-              </Button>
-              <Button href={`mailto:${profile.email}`} variant="outline" icon={Mail}>
-                Contact Me
-              </Button>
-            </div>
-          </FadeIn>
-          <FadeIn trigger="mount" play={ready} delay={0.95} className="hidden justify-end xl:col-span-2 xl:flex">
-            <button
-              type="button"
-              onClick={() => scrollTo("#about")}
-              className="group/scroll t-label flex min-h-11 items-center gap-3 text-muted transition-colors hover:text-fg"
-            >
-              Scroll to explore
-              <span aria-hidden className="relative block h-10 w-px overflow-hidden bg-line">
-                <span className="absolute inset-x-0 top-0 block h-1/2 animate-[scroll-cue_1.8s_var(--ease-in-out)_infinite] bg-fg" />
-              </span>
-            </button>
-          </FadeIn>
+      {/* Desktop and tablet */}
+      <div className="container-x relative hidden min-h-svh flex-col pt-[calc(var(--nav-h)+clamp(2rem,6svh,5rem))] md:flex">
+        <p className="hero-role self-end text-right">{role}</p>
+        <div className="mt-auto pb-[clamp(1.5rem,5svh,3.5rem)]">
+          <HeroName play={ready} />
+          <p className="hero-role mt-[clamp(1.75rem,2.6vw,2.75rem)] text-right">{title}</p>
         </div>
       </div>
 
-      <FloatingCodeCard play={ready} bounds={section} />
+      {/* Phones */}
+      <div className="container-x relative flex min-h-svh flex-col md:hidden" aria-hidden>
+        {/* The photo's head reaches the top of a phone screen, so the name sits at chest height with the role. */}
+        <p className="hero-role-sm mt-[56svh] flex items-center justify-center">
+          {firstName}
+          <span className="mx-1.5 inline-block size-1.5 rounded-full bg-fg" />
+          {otherNames.join(" ")}
+        </p>
+        <div className="mt-5 flex items-start justify-between gap-6">
+          <p className="hero-role-sm">
+            {availLead}
+            <br />
+            &amp; {availTail}
+          </p>
+          <p className="hero-role-sm text-right">{profile.title}</p>
+        </div>
+      </div>
     </section>
   );
 }
