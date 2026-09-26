@@ -2,8 +2,7 @@ import { DrawLine, FadeIn, RevealText } from "../../components/motion";
 import { SectionLabel } from "../../components/ui/SectionLabel";
 import { copy } from "../../content/profile";
 import { projects } from "../../content/projects";
-import { featuredProjects } from "../../lib/projectLookup";
-import { CaseStudy } from "./CaseStudy";
+import { FeaturedGallery } from "./FeaturedGallery";
 import { ProjectIndex } from "./ProjectIndex";
 
 export function Work() {
@@ -32,13 +31,7 @@ export function Work() {
         </div>
       </div>
 
-      {/* Featured projects as case studies (the original data's featured flag). */}
-      <div className="mt-24 space-y-[clamp(7rem,4rem+10vw,14rem)] md:mt-32">
-        {featuredProjects.map((p, i) => (
-          <CaseStudy key={p.id} project={p} flip={i % 2 === 1} priority={i === 0} />
-        ))}
-      </div>
-
+      <FeaturedGallery />
       <ProjectIndex />
     </section>
   );
