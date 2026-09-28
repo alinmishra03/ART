@@ -168,7 +168,7 @@ function FeaturedCard({ project: p, index }: { project: Project; index: number }
       <a href={projectPath(p)} onClick={onLinkClick} data-cursor="view" className="block">
         <p className="t-label text-accent">Project {pad2(index + 1)}</p>
 
-        {/* One frame for every project (see .project-frame): 16:9, the complete screenshot contained, sheen on top. */}
+        {/* One frame for every project (see .project-frame): 16:9, the screenshot filling it from the top, sheen on top. */}
         {/* GSAP drifts [data-card-img] (and writes inline `scale: none` on it), so the hover scale lives on the frame inside. */}
         <div data-card-media className="mt-4">
           <div data-card-img>
@@ -189,12 +189,15 @@ function FeaturedCard({ project: p, index }: { project: Project; index: number }
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-[1fr_minmax(0,24rem)] md:items-start md:gap-10">
-          <h3 className="t-h2 transition-transform duration-700 ease-out group-hover/card:translate-x-2">{p.title}</h3>
-          <div>
-            <p className="text-muted">{p.summary}</p>
-            <span className="t-label mt-4 inline-flex min-h-11 items-center gap-2 text-fg">
-              View project
+        {/* Same shape under every frame: the title on one line, the summary held to two lines, then the link. */}
+        <div className="mt-6">
+          <h3 className="t-h2 truncate pb-[0.1em] transition-transform duration-700 ease-out group-hover/card:translate-x-2" title={p.title}>
+            {p.title}
+          </h3>
+          <div className="mt-3 flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-10">
+            <p className="line-clamp-2 min-h-[3.2em] max-w-[34rem] text-muted">{p.summary}</p>
+            <span className="t-label inline-flex min-h-11 shrink-0 items-center gap-2 text-fg md:min-h-[3.2em] md:items-start md:pt-[0.35em]">
+              Read more
               <ArrowRight size={14} className="transition-transform duration-500 ease-out group-hover/card:translate-x-1" />
             </span>
           </div>

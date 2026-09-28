@@ -83,7 +83,7 @@ export function Footer() {
     <footer
       ref={root}
       data-hide-dock
-      className="surface-invert relative flex flex-col justify-end overflow-hidden border-t border-line bg-bg md:min-h-svh"
+      className="surface-invert relative flex flex-col justify-end overflow-hidden bg-bg md:min-h-svh"
     >
       {/* The hero photograph across the whole footer, in black and white (the image file is untouched). */}
       <div aria-hidden className="footer-photo pointer-events-none absolute inset-0 overflow-hidden">

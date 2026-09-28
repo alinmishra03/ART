@@ -1,4 +1,4 @@
-import { DrawLine, FadeIn, RevealText } from "../../components/motion";
+import { FadeIn, RevealText } from "../../components/motion";
 import { SectionLabel } from "../../components/ui/SectionLabel";
 import { copy } from "../../content/profile";
 import { projects } from "../../content/projects";
@@ -13,7 +13,6 @@ export function Work() {
       <div className="container-x">
         <div className="flex items-center justify-between gap-6">
           <SectionLabel index="02">{copy.projectsEyebrow}</SectionLabel>
-          <DrawLine className="hidden flex-1 md:block" />
           <p className="t-label hidden text-muted md:block">{projects.length} projects</p>
         </div>
         <div className="grid-12 mt-10 gap-y-8 md:mt-14">

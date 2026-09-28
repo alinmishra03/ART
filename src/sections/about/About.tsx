@@ -44,7 +44,6 @@ export function About() {
       <div className="container-x">
         <div className="flex items-center justify-between gap-6">
           <SectionLabel index="01">{copy.aboutEyebrow}</SectionLabel>
-          <DrawLine className="hidden flex-1 md:block" />
         </div>
 
         <h2 id="about-title" className="t-display mt-8 md:mt-10">

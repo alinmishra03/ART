@@ -1,5 +1,5 @@
 import { useRef, type ComponentType } from "react";
-import { DrawLine, FadeIn, Magnetic, RevealText, Stagger } from "../../components/motion";
+import { FadeIn, Magnetic, RevealText, Stagger } from "../../components/motion";
 import { ArrowUpRight, GitHub, LinkedIn, Mail, Phone } from "../../components/ui/icons";
 import { SectionLabel } from "../../components/ui/SectionLabel";
 import { copy, phone, profile } from "../../content/profile";
@@ -79,7 +79,6 @@ export function Contact() {
       <div className="container-x">
         <div className="flex items-center justify-between gap-6">
           <SectionLabel index="04">{copy.contactEyebrow}</SectionLabel>
-          <DrawLine className="hidden flex-1 md:block" />
           <p className="t-label hidden items-center gap-2 text-muted md:flex">
             <span aria-hidden className="size-1.5 rounded-full bg-accent" />
             {copy.heroBadge}

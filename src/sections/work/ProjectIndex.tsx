@@ -151,8 +151,10 @@ export function ProjectIndex() {
                 className="row-main group/row grid flex-1 grid-cols-[4.5rem_1fr] items-center gap-x-4 gap-y-1 py-5 transition-opacity duration-300 md:grid-cols-[3.5rem_1fr_10rem] md:py-7 lg:grid-cols-[4rem_1.2fr_10rem_1fr]"
               >
                 {/* Mobile thumbnail */}
-                <span className="row-span-2 flex items-center justify-center self-center rounded-sm border border-line bg-bg-sunken p-1 md:hidden">
-                  <ProjectImage id={p.id} alt="" sizes="96px" capToNative className="block h-auto w-full rounded-[2px]" />
+                <span className="row-span-2 block self-center rounded-sm border border-line bg-bg-sunken p-1 md:hidden">
+                  <span className="block aspect-[16/10] overflow-hidden rounded-[2px]">
+                    <ProjectImage id={p.id} alt="" sizes="96px" className="block size-full object-cover object-top" />
+                  </span>
                 </span>
                 <span className="t-label hidden text-subtle md:block">{pad2(n)}</span>
                 <span className="flex items-baseline gap-3 text-[clamp(1.35rem,0.9rem+1.9vw,3rem)] font-semibold leading-[1.05] tracking-[-0.035em] transition-transform duration-500 ease-out group-hover/row:translate-x-2 group-focus-visible/row:translate-x-2">
@@ -191,7 +193,9 @@ export function ProjectIndex() {
           style={{ zIndex: "var(--z-nav)" }}
         >
           <div data-preview-inner className="rounded-md border border-line bg-bg-raised p-1.5 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.45)]">
-            {active && <ProjectImage key={active} id={active} alt="" sizes="352px" capToNative className="mx-auto block h-auto w-full rounded-sm" />}
+            <div className="aspect-[16/10] overflow-hidden rounded-sm bg-bg-sunken">
+              {active && <ProjectImage key={active} id={active} alt="" sizes="352px" className="block size-full object-cover object-top" />}
+            </div>
           </div>
         </div>
       )}

@@ -75,7 +75,7 @@ function NextProject({ project: p }: { project: Project }) {
   );
 
   return (
-    <nav aria-label="Next project" className="border-t border-line">
+    <nav aria-label="Next project">
       <a href={projectPath(p)} onClick={onLinkClick} data-cursor="next" className="group/next group/shot container-x block py-section">
         <p className="t-label flex items-center justify-between text-muted">
           <span>Next project</span>

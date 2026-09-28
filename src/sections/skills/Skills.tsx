@@ -37,7 +37,6 @@ export function Skills() {
       <div className="container-x">
         <div className="flex items-center justify-between gap-6">
           <SectionLabel index="03">{copy.skillsEyebrow}</SectionLabel>
-          <DrawLine className="hidden flex-1 md:block" />
         </div>
         <div className="grid-12 mt-10 gap-y-8 md:mt-14">
           <h2 id="skills-title" className="t-display col-span-4 md:col-span-8 lg:col-span-7">
