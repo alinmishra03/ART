@@ -251,7 +251,7 @@ export function Nav() {
                       onFocus={() => setHovered(id)}
                       onBlur={() => setHovered(null)}
                       aria-current={active === id ? "location" : undefined}
-                      className={`group/roll t-label flex min-h-10 items-center gap-1.5 rounded-full px-4 transition-colors duration-500 lg:px-5 ${isLit ? "text-bg" : "text-muted"}`}
+                      className={`group/roll t-label flex min-h-10 items-center gap-1.5 rounded-full px-4 transition-colors duration-500 lg:px-5 lg:max-[70rem]:px-3.5 ${isLit ? "text-bg" : "text-muted"}`}
                     >
                       <span aria-hidden className="hidden text-[0.85em] opacity-55 lg:inline">
                         0{i + 1}
@@ -270,7 +270,7 @@ export function Nav() {
               <ThemeToggle />
             </div>
             <div data-nav-item data-fade="" className="hidden lg:block">
-              <Button href="/#contact" onClick={(e) => goTo(e, "contact")} size="sm" icon={ArrowRight}>
+              <Button href="/#contact" onClick={(e) => goTo(e, "contact")} size="sm" icon={ArrowRight} className="whitespace-nowrap">
                 Get in Touch
               </Button>
             </div>

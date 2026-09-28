@@ -44,6 +44,8 @@ export function HeroName({ play }: { play: boolean }) {
       const a1 = probe[0].getBoundingClientRect().width / 100;
       const a2 = probe[1].getBoundingClientRect().width / 100;
       const width = el.clientWidth;
+      // Hidden (phones render HeroClassic instead): no metrics, so no entrance or sway runs.
+      if (!width) return setM(null);
       const font = width / (a1 + a2 + CARD + GAP * 2);
       const w1 = a1 * font;
       const w2 = a2 * font;
@@ -86,6 +88,15 @@ export function HeroName({ play }: { play: boolean }) {
       const mm = gsap.matchMedia();
       const state = { p: 0 };
       const render = () => apply.current(state.p);
+      // The pointer and sway only drive the name while it is on screen.
+      let onScreen = true;
+      let sway: gsap.core.Tween | undefined;
+      const io = new IntersectionObserver(([entry]) => {
+        onScreen = entry.isIntersecting;
+        if (onScreen) sway?.resume();
+        else sway?.pause();
+      });
+      io.observe(row.current!);
 
       mm.add(MQ.motion, () => {
         gsap
@@ -96,17 +107,24 @@ export function HeroName({ play }: { play: boolean }) {
       });
 
       mm.add(`${MQ.fine} and ${MQ.motion}`, () => {
-        const onMove = (e: PointerEvent) =>
+        const onMove = (e: PointerEvent) => {
+          if (!onScreen) return;
           gsap.to(state, { p: (e.clientX / window.innerWidth) * 2 - 1, duration: 0.9, ease: "power3.out", overwrite: true, onUpdate: render });
+        };
         window.addEventListener("pointermove", onMove, { passive: true });
         return () => window.removeEventListener("pointermove", onMove);
       });
 
       mm.add(`(hover: none) and ${MQ.motion}`, () => {
-        gsap.fromTo(state, { p: -0.8 }, { p: 0.8, duration: 4, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 2, onUpdate: render });
+        sway = gsap.fromTo(state, { p: -0.8 }, { p: 0.8, duration: 4, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 2, onUpdate: render });
+        if (!onScreen) sway.pause();
+        return () => {
+          sway = undefined;
+        };
       });
 
       return () => {
+        io.disconnect();
         mm.revert();
         apply.current(0);
       };
