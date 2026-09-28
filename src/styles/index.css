@@ -811,3 +811,319 @@ html.theme-fading *::after {
   font-weight: 400;
   letter-spacing: -0.02em;
 }
+
+/*
+ * About: the profile at a glance, across the full width. Phones: one column;
+ * tablets: two by two; wide screens: four in a row on the page grid.
+ */
+.about-facts {
+  display: grid;
+  gap: 1.5rem var(--gutter);
+  font-size: var(--text-body);
+  line-height: 1.35;
+}
+@media (min-width: 48rem) {
+  .about-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64rem) {
+  .about-facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/*
+ * Games: one console holding both games. Everything is drawn from the
+ * tokens, so it follows the theme and the inverted surfaces.
+ */
+.game-console {
+  border-radius: calc(var(--radius-md) * 2);
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  padding: clamp(1rem, 0.6rem + 1.6vw, 2.25rem);
+  box-shadow: 0 40px 80px -60px rgb(0 0 0 / 0.6);
+}
+.game-tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--bg-sunken);
+}
+.game-tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg-muted);
+  transition: background-color 400ms var(--ease-out), color 400ms var(--ease-out);
+}
+.game-tab:hover {
+  color: var(--fg);
+}
+.game-tab[aria-selected="true"] {
+  background: var(--fg);
+  color: var(--bg);
+}
+.game-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem var(--gutter);
+}
+@media (min-width: 40rem) and (max-width: 63.99rem) {
+  .game-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.game-stats dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+.game-stats dd {
+  margin-top: 0.25rem;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.game-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.4rem;
+  border-radius: var(--radius-pill);
+  background: var(--fg);
+  color: var(--bg);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background-color 400ms var(--ease-out), color 400ms var(--ease-out), transform 400ms var(--ease-out);
+}
+.game-button:hover {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.game-button:active {
+  transform: scale(0.97);
+}
+/* Start / result card over the board. */
+.game-overlay {
+  position: absolute;
+  inset: -0.25rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--bg-raised) 82%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: game-pop 500ms var(--ease-out) both;
+}
+@keyframes game-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+/* Stack Match: cards flip in 3D; a matched pair takes the accent. */
+.match-card {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  perspective: 900px;
+  border-radius: var(--radius-md);
+}
+@media (min-width: 40rem) {
+  .match-card {
+    aspect-ratio: 4 / 3;
+  }
+}
+.match-card-inner {
+  position: relative;
+  display: block;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 600ms var(--ease-out);
+}
+.match-card.is-up .match-card-inner {
+  transform: rotateY(180deg);
+}
+.match-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.match-back {
+  background: var(--bg-sunken);
+  border: 1px solid var(--line);
+  transition: border-color 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+.match-card:not(.is-up):hover .match-back {
+  border-color: var(--line-strong);
+  transform: translateY(-3px);
+}
+.match-front {
+  transform: rotateY(180deg);
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  text-align: center;
+}
+.match-card.is-matched .match-front {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+  animation: match-pulse 600ms var(--ease-out);
+}
+@keyframes match-pulse {
+  40% {
+    scale: 1.05;
+  }
+}
+.match-mono {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.6rem, 1rem + 2vw, 2.6rem);
+  line-height: 1;
+}
+.match-name {
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 0.45rem + 0.35vw, 0.75rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.match-card[aria-disabled="true"] {
+  cursor: default;
+}
+
+/* Bug Smash: nine source files; a bug pops up out of one, then gets squashed. */
+.bug-hole {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-sunken);
+  border: 1px solid var(--line);
+  text-align: left;
+  touch-action: manipulation;
+  transition: border-color 250ms var(--ease-out);
+}
+.bug-hole.has-bug {
+  border-color: var(--accent);
+}
+.bug-file {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 0.5rem + 0.3vw, 0.78rem);
+  color: var(--fg-muted);
+}
+.bug-code {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.8rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.bug-code span {
+  display: block;
+  height: 0.3rem;
+  border-radius: 999px;
+  background: var(--line);
+}
+.bug-critter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34%;
+  aspect-ratio: 1;
+  color: var(--accent);
+  transform: translate(-50%, 70%) scale(0.4);
+  opacity: 0;
+  transition: transform 220ms var(--ease-out), opacity 160ms var(--ease-out);
+  pointer-events: none;
+}
+.bug-hole.has-bug .bug-critter {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  animation: bug-wiggle 420ms ease-in-out infinite alternate;
+}
+@keyframes bug-wiggle {
+  from {
+    rotate: -9deg;
+  }
+  to {
+    rotate: 9deg;
+  }
+}
+.bug-splat {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--accent);
+  opacity: 0;
+  transform: translate(-50%, 0);
+  pointer-events: none;
+}
+.bug-hole.is-splat .bug-splat {
+  animation: bug-score 320ms var(--ease-out);
+}
+.bug-hole.is-splat {
+  animation: bug-hit 320ms var(--ease-out);
+}
+@keyframes bug-score {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -140%);
+  }
+}
+@keyframes bug-hit {
+  30% {
+    scale: 0.96;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .match-card-inner,
+  .bug-critter {
+    transition: none;
+  }
+  .match-card.is-matched .match-front,
+  .bug-hole.has-bug .bug-critter,
+  .bug-hole.is-splat,
+  .bug-hole.is-splat .bug-splat,
+  .game-overlay {
+    animation: none;
+  }
+}

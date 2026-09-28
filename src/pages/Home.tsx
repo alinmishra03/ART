@@ -6,6 +6,7 @@ import { Hero } from "../sections/hero/Hero";
 import { About } from "../sections/about/About";
 import { Footer } from "../components/layout/Footer";
 import { Contact } from "../sections/contact/Contact";
+import { Games } from "../sections/games/Games";
 import { Skills } from "../sections/skills/Skills";
 import { Work } from "../sections/work/Work";
 
@@ -30,6 +31,7 @@ export function Home() {
         <About />
         <Work />
         <Skills />
+        <Games />
         <Contact />
       </main>
       <Footer />

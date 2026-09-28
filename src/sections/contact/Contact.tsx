@@ -78,7 +78,7 @@ export function Contact() {
     <section ref={section} id="contact" data-hide-dock aria-labelledby="contact-title" className="surface-invert relative overflow-x-clip bg-bg py-section">
       <div className="container-x">
         <div className="flex items-center justify-between gap-6">
-          <SectionLabel index="04">{copy.contactEyebrow}</SectionLabel>
+          <SectionLabel index="05">{copy.contactEyebrow}</SectionLabel>
           <p className="t-label hidden items-center gap-2 text-muted md:flex">
             <span aria-hidden className="size-1.5 rounded-full bg-accent" />
             {copy.heroBadge}
